@@ -4,8 +4,6 @@ Back-end written in NodeJS for IdeaApp
 
 ## TODO
 
----
-
 ## Basic
 
 - [x] Set up Express Server
