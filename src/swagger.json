@@ -1,0 +1,126 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Back end server for Idea App built with ExpressJS",
+    "version": "1.0.0",
+    "title": "Idea App",
+    "contact":{
+      "email": "Akim Benchiha"
+    },
+    "license": {
+      "name": "GNU License V3",
+      "url": "https://www.gnu.org/licenses/licenses.html"
+    }
+  },
+  "host": "localhost:3000",
+  "basePath": "/api/v1",
+  "schemes": ["http"],
+  "tags": [
+    {
+      "name": "api",
+      "description": "Home entry point"
+    },
+    {
+      "name": "users",
+      "description": "Operations about users for authentication or settings"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "tags": ["api"],
+        "summary": "Home entry point",
+        "description": "Root api. Where all entry point starts",
+        "operationId": "getAPI",
+        "produces": ["application/json"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "404": {
+            "description": "Api not found"
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": ["users"],
+        "summary": "User entry point",
+        "description": "Get all users",
+        "operationId": "getUsers",
+        "produces": ["application/json"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "404": {
+            "description": "Users api not found"
+          }
+        }
+      }
+    },
+    "/users/{userId}": {
+      "get": {
+        "tags": ["users"],
+        "summary": "Find users by ID",
+        "description": "Return a single user if exist",
+        "operationId": "getUserById",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of user to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/users/{userId}/settings": {
+      "get": {
+        "tags": ["users"],
+        "summary": "Find users setting",
+        "description": "Return all settings for a user",
+        "operationId": "getSettingsByUserId",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of user for his settings",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    }
+  }
+}
