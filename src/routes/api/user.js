@@ -11,20 +11,17 @@ const router = express.Router();
 router.use("/:id/settings", userSettingsRoute);
 
 router.get("/", async (req, res, next) => {
+    let responseObject;
     try {
         const users = await User.find();
-        let responseObject = new ResponseObject(
+        responseObject = new ResponseObject(
             200,
             { users: users },
             _.get(req, "originalUrl", "Cannot retrieve api url")
         );
         return res.status(responseObject.responseCode).send(responseObject.returnResponse(true));
     } catch (error) {
-        let responseObject = new ResponseObject(
-            400,
-            _.get(error, "message", "Bad Request"),
-            _.get(req, "originalUrl", "Cannot retrieve api url")
-        );
+        responseObject = new ResponseObject(400, { error: error }, _.get(req, "originalUrl", "Cannot retrieve api url"))
         return res.status(responseObject.responseCode).send(responseObject.returnResponse(false));
     }
 });
@@ -50,7 +47,7 @@ router.get("/:id", async (req, res, next) => {
 
 
 router.post("/register", validateBody(UserRegisterSchemaValidation), async (req, res, next) => {
-    let responseObject = new ResponseObject();
+    let responseObject
     try {
         const user = new User({
             username: _.get(req, "body.username"),
@@ -70,23 +67,19 @@ router.post("/register", validateBody(UserRegisterSchemaValidation), async (req,
         });
 
         if (emailOrUsernameCheckExist) {
-            responseObject.apiURL = _.get(req, "originalUrl", "Cannot retrieve api url")
-            responseObject.responseCode = 400
-            responseObject.responseData = { error: "Email or Username already exist" }
+            responseObject = new ResponseObject(400, { error: "Email or Username already exist" }, _.get(req, "originalUrl", "Cannot retrieve api url"))
             return res.status(responseObject.responseCode).send(responseObject.returnResponse(false));
         }
 
         const savedUser = await user.save();
         const { username, firstname, lastname, email, age, createdAt, updatedAt } = savedUser
-        responseObject.apiURL = _.get(req, "originalUrl", "Cannot retrieve api url")
-        responseObject.responseCode = 201
-        responseObject.responseData = { response: { username, firstname, lastname, email, age, createdAt, updatedAt } }
+        responseObject = new ResponseObject(201, 
+            { response: { username, firstname, lastname, email, age, createdAt, updatedAt } }, 
+            _.get(req, "originalUrl", "Cannot retrieve api url"))
         return res.status(responseObject.responseCode).send(responseObject.returnResponse(true));
 
     } catch (error) {
-        responseObject.apiURL = _.get(req, "originalUrl", "Cannot retrieve api url")
-        responseObject.responseCode = 400
-        responseObject.responseData = error
+        responseObject = new ResponseObject(400, { error: error }, _.get(req, "originalUrl", "Cannot retrieve api url"))
         return res.status(responseObject.responseCode).send(responseObject.returnResponse(false));
     }
 
@@ -94,7 +87,7 @@ router.post("/register", validateBody(UserRegisterSchemaValidation), async (req,
 
 
 router.post("/login", validateBody(UserLoginSchemaValidation), async (req, res, next) => {
-    let responseObject = new ResponseObject();
+    let responseObject;
     try {
         const user = new User({
             username: _.get(req, "body.username"),
@@ -106,9 +99,7 @@ router.post("/login", validateBody(UserLoginSchemaValidation), async (req, res, 
         const isMatchPassword = await searchUser.isValidPassword(user.password)
 
         if (!searchUser || !isMatchPassword) {
-            responseObject.apiURL = _.get(req, "originalUrl", "Cannot retrieve api url")
-            responseObject.responseCode = 400
-            responseObject.responseData = { error: "Password or Username incorrect" }
+            responseObject = new ResponseObject(400, { error: "Password or Username incorrect" }, _.get(req, "originalUrl", "Cannot retrieve api url"));
             return res.status(responseObject.responseCode).send(responseObject.returnResponse(false));
         }
 
@@ -117,15 +108,13 @@ router.post("/login", validateBody(UserLoginSchemaValidation), async (req, res, 
         //Create and assign token
         const token = jwt.sign({_id: _.get(searchUser, "_id")}, process.env.JWT_TOKEN, {expiresIn: '20s'});
 
-        responseObject.apiURL = _.get(req, "originalUrl", "Cannot retrieve api url")
-        responseObject.responseCode = 200
-        responseObject.responseData = { response: { token, username, firstname, lastname, email, age, createdAt, updatedAt } }
+        responseObject = new ResponseObject(200, 
+            { response: { token, username, firstname, lastname, email, age, createdAt, updatedAt } },
+             _.get(req, "originalUrl", "Cannot retrieve api url"));
         return res.send(responseObject.returnResponse(true)).status(responseObject.responseCode);
 
     } catch (error) {
-        responseObject.apiURL = _.get(req, "originalUrl", "Cannot retrieve api url")
-        responseObject.responseCode = 400
-        responseObject.responseData = error
+        responseObject = new ResponseObject(400, { error: error }, _.get(req, "originalUrl", "Cannot retrieve api url"))
         return res.status(responseObject.responseCode).send(responseObject.returnResponse(false));
     }
 
