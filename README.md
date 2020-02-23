@@ -16,9 +16,13 @@ Back-end written in NodeJS for IdeaApp
 - [x] Monitor MongDB flow
 - [x] Add ConnectionString to env file
 
+## User Model
+
+- [x] Define User Model
+- [x] Define User Setting Model
+
 ## User Auth
 
-- [ ] Define User Model
 - [ ] Define Basic routes for user authentication
 - [ ] Hash Password of user
 - [ ] Set up JWT
