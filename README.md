@@ -9,6 +9,7 @@ Back-end written in NodeJS for IdeaApp
 - [x] Set up Express Server
 - [x] Define environment variables
 - [x] Add Swagger for documentation
+- [ ] Set connect-flash
 
 ## MongoDB
 
