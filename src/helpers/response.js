@@ -3,8 +3,8 @@
  * @class ResponseObject
  * @author Akim Benchiha
  */
-class ResponseObject{
-    
+class ResponseObject {
+
     /**
      * @param  {string} responseCode - HTTP code
      * @param  {string} responseData - response data format in JSON
@@ -12,7 +12,7 @@ class ResponseObject{
      * @author Akim Benchiha
      * @constructor
      */
-    constructor(responseCode, responseData, apiURL){
+    constructor(responseCode, responseData, apiURL) {
         this.responseCode = responseCode
         this.responseData = responseData
         this.apiURL = apiURL
@@ -22,13 +22,13 @@ class ResponseObject{
      * @param  {} isSuccess - Is it an error response or a success response
      * @public
      */
-    returnResponse(isSuccess){
+    returnResponse(isSuccess) {
         return {
             "code": this.responseCode,
-            "success" : isSuccess,
+            "success": isSuccess,
             "apiURL": this.apiURL,
-            "data" : this.responseData,
-            'timestamps' : Date.now()
+            "data": this.responseData,
+            'timestamps': Date.now()
         }
     }
 }

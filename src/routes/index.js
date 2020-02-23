@@ -4,8 +4,8 @@ import userRoute from './api/user';
 
 const router = express.Router();
 
-router.use('/', baseRoute); 
-router.use('/users', userRoute); 
+router.use('/', baseRoute);
+router.use('/users', userRoute);
 
 
 export default router;

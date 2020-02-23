@@ -3,8 +3,8 @@ import mongoose from "mongoose";
 mongoose.Promise = Promise;
 
 //If node process ends
-process.on("SIGINT", function() {
-  mongoose.connection.close(function() {
+process.on("SIGINT", function () {
+  mongoose.connection.close(function () {
     console.log(
       "Mongoose default connection disconnected through app termination"
     );
@@ -28,8 +28,8 @@ const connectMongoDB = async (connection) => {
   });
 };
 
-const closeMongoDB = () =>{
-    mongoose.connection.close();
+const closeMongoDB = () => {
+  mongoose.connection.close();
 }
 
-export {connectMongoDB, closeMongoDB};
+export { connectMongoDB, closeMongoDB };

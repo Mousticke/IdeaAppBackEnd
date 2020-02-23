@@ -2,26 +2,26 @@ import express from 'express';
 import _ from 'lodash';
 import ResponseObject from '../../helpers/response';
 
-const router = express.Router({mergeParams: true});
+const router = express.Router({ mergeParams: true });
 
 router.get('/', (req, res, next) => {
 
     try {
         let responseObject = new ResponseObject(
-            200, 
+            200,
             {
-                message: "Welcome to a user settings route", 
-                id :_.get(req, "params.id") 
-            }, 
+                message: "Welcome to a user settings route",
+                id: _.get(req, "params.id")
+            },
             _.get(req, "originalUrl", "Cannot retrieve api url")
-            )
+        )
         res.send(responseObject.returnResponse(true)).status(200);
     } catch (error) {
-        let responseObject = new ResponseObject( 
-            500, 
-            _.get(error,"message", "Error occurred"),  
+        let responseObject = new ResponseObject(
+            500,
+            _.get(error, "message", "Error occurred"),
             _.get(req, "originalUrl", "Cannot retrieve api url")
-            )
+        )
         res.send(responseObject.returnResponse(false)).status(500);
     }
 });
