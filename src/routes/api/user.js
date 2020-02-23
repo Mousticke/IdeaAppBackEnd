@@ -1,13 +1,12 @@
 import express from "express";
 import _ from "lodash";
+import jwt from 'jsonwebtoken';
 import userSettingsRoute from "./userSettings";
 import ResponseObject from "../../helpers/response";
 import { User } from "../../Models/User/userModel";
 import { validateBody, UserRegisterSchemaValidation, UserLoginSchemaValidation } from '../../helpers/inputValidation';
 
 const router = express.Router();
-
-
 
 router.use("/:id/settings", userSettingsRoute);
 
@@ -113,11 +112,14 @@ router.post("/login", validateBody(UserLoginSchemaValidation), async (req, res, 
             return res.status(responseObject.responseCode).send(responseObject.returnResponse(false));
         }
 
-        const { username, firstname, lastname, email, age, createdAt, updatedAt } = searchUser
+        const {username, firstname, lastname, email, age, createdAt, updatedAt } = searchUser
+        
+        //Create and assign token
+        const token = jwt.sign({_id: _.get(searchUser, "_id")}, process.env.JWT_TOKEN, {expiresIn: '20s'});
 
         responseObject.apiURL = _.get(req, "originalUrl", "Cannot retrieve api url")
         responseObject.responseCode = 200
-        responseObject.responseData = { response: { username, firstname, lastname, email, age, createdAt, updatedAt } }
+        responseObject.responseData = { response: { token, username, firstname, lastname, email, age, createdAt, updatedAt } }
         return res.send(responseObject.returnResponse(true)).status(responseObject.responseCode);
 
     } catch (error) {
