@@ -10,6 +10,12 @@ Back-end written in NodeJS for IdeaApp
 - [x] Define environment variables
 - [x] Add Swagger for documentation
 
+## MongoDB
+
+- [x] Set up MongoDB connection
+- [x] Monitor MongDB flow
+- [x] Add ConnectionString to env file
+
 ## User Auth
 
 - [ ] Define User Model

@@ -2,16 +2,21 @@ import express from 'express';
 import morgan from 'morgan';
 import _ from 'lodash';
 import cors from 'cors';
+import dotenv from 'dotenv';
 import swaggerUi  from 'swagger-ui-express'
 import swaggerDocument from './swagger.json'
-import dotenv from 'dotenv';
 import api from './routes';
-
+import {connectMongoDB, closeMongoDB} from './config/database/mongoDB'
 
 dotenv.config();
 const app = express();
 const router = express.Router()
 
+connectMongoDB(`${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_TABLE}`)
+.catch(error => {
+    console.error(error) 
+    closeMongoDB()
+});
 app.use(cors());
 app.use(morgan("dev"));
 
