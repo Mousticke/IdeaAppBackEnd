@@ -14,14 +14,14 @@ router.get('/', async (req, res, next) => {
             { userSettings: userSettings },
             _.get(req, "originalUrl", "Cannot retrieve api url")
         );
-        return res.send(responseObject.returnResponse(true)).status(responseObject.responseCode);
+        return res.status(responseObject.responseCode).send(responseObject.returnResponse(true));
     } catch (error) {
         let responseObject = new ResponseObject(
             400,
             _.get(error, "message", "Bad Request"),
             _.get(req, "originalUrl", "Cannot retrieve api url")
         );
-        res.send(responseObject.returnResponse(false)).status(responseObject.responseCode);
+        return res.status(responseObject.responseCode).send(responseObject.returnResponse(false));
     }
 });
 
