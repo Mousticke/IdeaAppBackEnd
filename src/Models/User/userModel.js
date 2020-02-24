@@ -66,12 +66,19 @@ userSchema.pre("save", async function (next) {
     }
 });
 
-userSchema.methods.isValidPassword = async function(inputPassword){
+userSchema.methods.isValidPassword = async function (inputPassword) {
     try {
         return await bcrypt.compare(inputPassword, this.password);
     } catch (error) {
         throw new Error(error);
     }
+}
+
+userSchema.methods.toJSON = function () {
+    var obj = this.toObject();
+    delete obj.password;
+    delete obj.__v;
+    return obj;
 }
 
 export const User = mongoose.model('User', userSchema);

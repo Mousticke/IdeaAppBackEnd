@@ -5,15 +5,35 @@ import userSettingsRoute from "./userSettings";
 import ResponseObject from "../../helpers/response";
 import { User } from "../../Models/User/userModel";
 import { validateBody, UserRegisterSchemaValidation, UserLoginSchemaValidation } from '../../helpers/inputValidation';
+import passport from "passport";
 
 const router = express.Router();
+const signToken = user => {
+    return jwt.sign({
+        iss: 'ideaApp',
+        sub: user._id,
+        iat: new Date().getTime(),
+        exp: new Date().setDate(new Date().getDate() + 1)
+    }, process.env.JWT_TOKEN);
+}
+const passportSignIn = (req, res, next) => {
+    passport.authenticate('local', { session: false }, (err, user, info) => {
+        if (err || !user) {
+            let responseObject = new ResponseObject(400, { error: "Password or Username incorrect" }, "");
+            return res.status(401).send(responseObject.returnResponse(false));          
+        }else{
+            req.user = user;
+        }
+        next();
+    })(req, res);
+}
 
 router.use("/:id/settings", userSettingsRoute);
 
 router.get("/", async (req, res, next) => {
     let responseObject;
 
-    const users = await User.find();
+    const users = await User.find().select('-_id -__v -password');
     responseObject = new ResponseObject(
         200,
         { users: users },
@@ -24,7 +44,7 @@ router.get("/", async (req, res, next) => {
 
 router.get("/:id", async (req, res, next) => {
 
-    const user = await User.findOne({ _id: _.get(req, "params.id") });
+    const user = await User.findOne({ _id: _.get(req, "params.id") }).select('-_id -__v -password');
     let responseObject = new ResponseObject(
         200,
         { user: user },
@@ -60,42 +80,24 @@ router.post("/register", validateBody(UserRegisterSchemaValidation), async (req,
     }
 
     const savedUser = await user.save();
-    const { username, firstname, lastname, email, age, createdAt, updatedAt } = savedUser
+    savedUser.toJSON()
     responseObject = new ResponseObject(201,
-        { response: { username, firstname, lastname, email, age, createdAt, updatedAt } },
+        { response: savedUser },
         _.get(req, "originalUrl", "Cannot retrieve api url"))
     return res.status(responseObject.responseCode).send(responseObject.returnResponse(true));
 
 });
 
 
-router.post("/login", validateBody(UserLoginSchemaValidation), async (req, res, next) => {
+router.post("/login", validateBody(UserLoginSchemaValidation), passportSignIn, async (req, res, next) => {
     let responseObject;
-
-    const user = new User({
-        username: _.get(req, "body.username"),
-        password: _.get(req, "body.password")
-    });
-
-    //Checking if the user exists inside the database and password is correct
-    const searchUser = await User.findOne({ username: user.username });
-    const isMatchPassword = await searchUser.isValidPassword(user.password)
-
-    if (!searchUser || !isMatchPassword) {
-        responseObject = new ResponseObject(400, { error: "Password or Username incorrect" }, _.get(req, "originalUrl", "Cannot retrieve api url"));
-        return res.status(responseObject.responseCode).send(responseObject.returnResponse(false));
-    }
-
-    const { username, firstname, lastname, email, age, createdAt, updatedAt } = searchUser
-
+    const { _id, username, firstname, lastname, email, age } = req.user
     //Create and assign token
-    const token = jwt.sign({ _id: _.get(searchUser, "_id") }, process.env.JWT_TOKEN, { expiresIn: '20s' });
-
+    const token = signToken(req.user)
     responseObject = new ResponseObject(200,
-        { response: { token, username, firstname, lastname, email, age, createdAt, updatedAt } },
+        { response: { token, _id, username, firstname, lastname, email, age } },
         _.get(req, "originalUrl", "Cannot retrieve api url"));
-    return res.send(responseObject.returnResponse(true)).status(responseObject.responseCode);
-
+    res.status(responseObject.responseCode).send(responseObject.returnResponse(true));
 });
 
 export default router;

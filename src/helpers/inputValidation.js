@@ -15,7 +15,7 @@ const validateBody = (schema) => {
             );
             return res.status(responseObject.responseCode).send(responseObject)
         }
-        next();
+        return next();
     }
 }
 
