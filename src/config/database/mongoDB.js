@@ -24,7 +24,10 @@ const connectMongoDB = async (connection) => {
 
   await mongoose.connect(connection, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false
+
   });
 };
 

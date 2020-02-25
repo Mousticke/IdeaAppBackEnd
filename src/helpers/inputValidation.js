@@ -34,4 +34,14 @@ const UserLoginSchemaValidation = Joi.object({
     password: Joi.string().min(6).required(),
 });
 
-export {validateBody, UserRegisterSchemaValidation, UserLoginSchemaValidation}
+const UserInformationSchemaValidation = Joi.object({
+    username: Joi.string().min(4).required(),
+    firstname: Joi.string().min(2).required(),
+    lastname: Joi.string().min(2).required(),
+    email: Joi.string().required().email(),
+    password: Joi.string().min(6).required(),
+    repeatPassword: Joi.string().min(6).required(),
+    age: Joi.date()
+});
+
+export {validateBody, UserRegisterSchemaValidation, UserLoginSchemaValidation, UserInformationSchemaValidation}

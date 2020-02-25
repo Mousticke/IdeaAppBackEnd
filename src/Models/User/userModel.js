@@ -9,7 +9,8 @@ let userSchema = new Schema({
         type: String,
         required: true,
         min: 4,
-        max: 20
+        max: 20,
+        unique: true
     },
 
     firstname: {
@@ -29,6 +30,7 @@ let userSchema = new Schema({
     email: {
         type: String,
         required: true,
+        unique: true
     },
 
     age: {
@@ -41,19 +43,9 @@ let userSchema = new Schema({
         required: true,
         min: 6,
         max: 1024
-    },
-
-    createdAt: {
-        type: Date,
-        default: Date.now
-    },
-
-    updatedAt: {
-        type: Date,
-        default: Date.now
     }
 
-});
+}, { timestamps: true });
 
 userSchema.pre("save", async function (next) {
     try {
