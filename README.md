@@ -27,4 +27,9 @@ Back-end written in NodeJS for IdeaApp
 - [x] Define Basic routes for user authentication
 - [x] Hash Password of user
 - [x] Set up JWT
-- [ ] Set up Passport
+- [x] Set up Passport
+
+## CRUD User
+
+- [ ] Delete / Update User
+- [ ] Delete / Update / Create User settings

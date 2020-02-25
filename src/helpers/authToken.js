@@ -11,7 +11,6 @@ dotenv.config();
 const JwtStrategy = JwtPassport.Strategy;
 const LocalStrategy = LocalPassport.Strategy;
 
-
 passport.use(new JwtStrategy({
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: process.env.JWT_TOKEN

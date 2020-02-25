@@ -1,11 +1,11 @@
 import express from "express";
 import _ from "lodash";
 import jwt from 'jsonwebtoken';
+import passport from "passport";
 import userSettingsRoute from "./userSettings";
 import ResponseObject from "../../helpers/response";
 import { User } from "../../Models/User/userModel";
 import { validateBody, UserRegisterSchemaValidation, UserLoginSchemaValidation } from '../../helpers/inputValidation';
-import passport from "passport";
 
 const router = express.Router();
 const signToken = user => {
@@ -19,7 +19,7 @@ const signToken = user => {
 const passportSignIn = (req, res, next) => {
     passport.authenticate('local', { session: false }, (err, user, info) => {
         if (err || !user) {
-            let responseObject = new ResponseObject(400, { error: "Password or Username incorrect" }, "");
+            let responseObject = new ResponseObject(401, { error: "Password or Username incorrect" },  _.get(req, "originalUrl", "Cannot retrieve api url"));
             return res.status(401).send(responseObject.returnResponse(false));          
         }else{
             req.user = user;
@@ -28,7 +28,7 @@ const passportSignIn = (req, res, next) => {
     })(req, res);
 }
 
-router.use("/:id/settings", userSettingsRoute);
+router.use("/settings", userSettingsRoute);
 
 router.get("/", async (req, res, next) => {
     let responseObject;
@@ -81,8 +81,11 @@ router.post("/register", validateBody(UserRegisterSchemaValidation), async (req,
 
     const savedUser = await user.save();
     savedUser.toJSON()
+    const { _id, username, firstname, lastname, email, age } = savedUser
+    const token = signToken(savedUser)
+
     responseObject = new ResponseObject(201,
-        { response: savedUser },
+        { response: { token, _id, username, firstname, lastname, email, age } },
         _.get(req, "originalUrl", "Cannot retrieve api url"))
     return res.status(responseObject.responseCode).send(responseObject.returnResponse(true));
 
