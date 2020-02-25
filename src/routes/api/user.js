@@ -1,7 +1,6 @@
 import express from "express";
 import _ from "lodash";
 import passport from 'passport';
-import jwt from 'jsonwebtoken';
 import userSettingsRoute from "./userSettings";
 import ResponseObject from "../../helpers/response";
 import { User } from "../../Models/User/userModel";
@@ -24,9 +23,10 @@ router.get("/", async (req, res, next) => {
     return res.status(responseObject.responseCode).send(responseObject.returnResponse(true));
 });
 
+
 router.get("/:id", async (req, res, next) => {
 
-    const user = await User.findOne({ _id: _.get(req, "params.id") }).select('-_id -__v -password');
+    const user = await User.findById(_.get(req, "params.id")).select('-__v -password');
     let responseObject = new ResponseObject(
         200,
         { user: user },
@@ -84,8 +84,6 @@ router.post("/login", validateBody(UserLoginSchemaValidation), passport.authenti
         _.get(req, "originalUrl", "Cannot retrieve api url"));
     res.status(responseObject.responseCode).send(responseObject.returnResponse(true));
 });
-
-
 
 
 export default router;
