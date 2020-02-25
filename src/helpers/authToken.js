@@ -20,7 +20,7 @@ passport.use(new JwtStrategy({
         const user = await User.findById(payload.sub);
 
         //If the user doesn't exist, handle it
-        if (!user) return done(null, false);
+        if (!user) return done(null, false, { message: 'Incorrect credentials.' });
 
         //Return user if exist
         done(null, user);
@@ -33,17 +33,16 @@ passport.use(new LocalStrategy({
     usernameField: 'username'
 }, async (username, password, done) => {
     try {
-
         //Find the user given the username
         const user = await User.findOne({ username });
-        if(!user){
-            return done(null, false);
+        if (!user) {
+            return done(null, false, { message: 'Incorrect credentials.' });
         }
         //Check if password is correct
         const isMatchPassword = await user.isValidPassword(password);
         //If password not correct or no user found handle it
-        if(!isMatchPassword){
-            return done(null, false);
+        if (!isMatchPassword) {
+            return done(null, false, { message: 'Incorrect credentials.' });
         }
         //Return the user
         return done(null, user);
@@ -53,3 +52,25 @@ passport.use(new LocalStrategy({
 
 }));
 
+export const signToken = function (user) {
+    return jwt.sign({
+        iss: 'ideaApp',
+        sub: user._id,
+        iat: new Date().getTime(),
+        exp: new Date().setDate(new Date().getDate() + 1)
+    }, process.env.JWT_TOKEN);
+}
+
+passport.serializeUser(function (user, done) {
+    done(null, user._id);
+});
+
+passport.deserializeUser(async function (id, done) {
+    try {
+        const user = await User.findById(id);
+        if (!user) done(null, false);
+        done(null, user)
+    } catch (error) {
+        done(error, false)
+    }
+});

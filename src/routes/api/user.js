@@ -1,34 +1,16 @@
 import express from "express";
 import _ from "lodash";
+import passport from 'passport';
 import jwt from 'jsonwebtoken';
-import passport from "passport";
 import userSettingsRoute from "./userSettings";
 import ResponseObject from "../../helpers/response";
 import { User } from "../../Models/User/userModel";
 import { validateBody, UserRegisterSchemaValidation, UserLoginSchemaValidation } from '../../helpers/inputValidation';
+import passportConf, { signToken } from '../../helpers/authToken'
 
 const router = express.Router();
-const signToken = user => {
-    return jwt.sign({
-        iss: 'ideaApp',
-        sub: user._id,
-        iat: new Date().getTime(),
-        exp: new Date().setDate(new Date().getDate() + 1)
-    }, process.env.JWT_TOKEN);
-}
-const passportSignIn = (req, res, next) => {
-    passport.authenticate('local', { session: false }, (err, user, info) => {
-        if (err || !user) {
-            let responseObject = new ResponseObject(401, { error: "Password or Username incorrect" },  _.get(req, "originalUrl", "Cannot retrieve api url"));
-            return res.status(401).send(responseObject.returnResponse(false));          
-        }else{
-            req.user = user;
-        }
-        next();
-    })(req, res);
-}
 
-router.use("/settings", userSettingsRoute);
+router.use("/settings", passport.authenticate('jwt', { session: false }), userSettingsRoute);
 
 router.get("/", async (req, res, next) => {
     let responseObject;
@@ -92,7 +74,7 @@ router.post("/register", validateBody(UserRegisterSchemaValidation), async (req,
 });
 
 
-router.post("/login", validateBody(UserLoginSchemaValidation), passportSignIn, async (req, res, next) => {
+router.post("/login", validateBody(UserLoginSchemaValidation), passport.authenticate('local', { session: false }), async (req, res, next) => {
     let responseObject;
     const { _id, username, firstname, lastname, email, age } = req.user
     //Create and assign token
@@ -102,5 +84,8 @@ router.post("/login", validateBody(UserLoginSchemaValidation), passportSignIn, a
         _.get(req, "originalUrl", "Cannot retrieve api url"));
     res.status(responseObject.responseCode).send(responseObject.returnResponse(true));
 });
+
+
+
 
 export default router;

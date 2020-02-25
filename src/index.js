@@ -1,4 +1,6 @@
 import express from 'express';
+import expressSession from 'express-session';
+import passport from 'passport';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
 import _ from 'lodash';
@@ -25,6 +27,15 @@ app.use(bodyParser.urlencoded({ // Middleware
     extended: true
 }));
 app.use(bodyParser.json());
+app.use(express.json());
+app.use(expressSession({
+    secret: process.env.SESSION_SECRET, 
+    resave: false,
+    saveUninitialized: true
+}))
+app.use(passport.initialize())
+app.use(passport.session());
+
 
 const redirectHome = (req, res, next) => {
     if (_.get(req, "originalUrl") == '/')
@@ -37,7 +48,7 @@ router.use(function (req, res, next) {
     next()
 });
 
-app.use(express.json());
+
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/api/v1', api);
 app.use(redirectHome);
