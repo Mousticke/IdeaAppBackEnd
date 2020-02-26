@@ -10,7 +10,8 @@ let userSchema = new Schema({
         required: true,
         min: 4,
         max: 20,
-        unique: true
+        unique: true,
+        index: true
     },
 
     firstname: {
