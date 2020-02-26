@@ -33,3 +33,32 @@ Back-end written in NodeJS for IdeaApp
 
 - [x] Update User
 - [x] Update / Create User settings
+
+## Unit Test
+
+- [ ] Add Unit Test on User
+- [ ] Add Unit Test on User Settings
+
+## Swagger
+
+- [ ] Update Swagger API
+
+## Idea API
+
+- [ ] Set Idea Model
+- [ ] Set Idea Controller
+- [ ] Set Idea Routes
+- [ ] Unit Test Idea API
+- [ ] Add Idea to Swagger
+
+## Back End Clean
+
+- [ ] Add Helmet
+- [ ] Do Security check
+- [ ] Do dependencies check
+- [ ] Comment each functions
+
+## Prepare to Deploy
+
+- [ ] Set Heroku
+- [ ] Test API remote
