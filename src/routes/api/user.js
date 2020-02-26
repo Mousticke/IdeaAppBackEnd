@@ -16,6 +16,6 @@ router.post("/register", validateBody(UserRegisterSchemaValidation), createUser)
 
 router.post("/login", validateBody(UserLoginSchemaValidation), passport.authenticate('local', { session: false }), loginUser);
 
-router.put("/:id", validateBody(UserInformationSchemaValidation), passport.authenticate('jwt', { session: false }), updateUser);
+router.patch("/:id", validateBody(UserInformationSchemaValidation), passport.authenticate('jwt', { session: false }), updateUser);
 
 export default router;

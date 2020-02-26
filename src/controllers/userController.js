@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
 import _ from "lodash";
+import mongoose from 'mongoose';
 import ResponseObject from "../helpers/response";
 import { User } from "../Models/User/userModel";
 import { signToken } from '../helpers/authToken';
@@ -61,7 +62,7 @@ export const createUser = async (req, res, next) => {
         const { _id, username, firstname, lastname, email, age } = savedUser
         const token = signToken(savedUser)
 
-        const userSettings = new UserSetting();
+        const userSettings = new UserSetting({userID: savedUser._id});
         const savedDefaultSettings = await userSettings.save()
 
         const responseObject = constructResponse(201, { token, _id, username, firstname, lastname, email, age, userSettings: savedDefaultSettings }, _.get(req, "originalUrl", ""), "POST")
@@ -70,8 +71,6 @@ export const createUser = async (req, res, next) => {
         const responseObject = constructResponse(500, error, _.get(req, "originalUrl", ""), "PUT");
         return responseObject.returnAPIResponse(res, false);
     }
-
-
 }
 
 export const loginUser = async (req, res, next) => {
@@ -83,6 +82,10 @@ export const loginUser = async (req, res, next) => {
 }
 
 export const updateUser = async (req, res, next) => {
+    if (req.user._id != req.params.id) {
+        const responseObject = constructResponse(403, "Unauthorized request for these parameters", _.get(req, "originalUrl", ""), "GET")
+        return responseObject.returnAPIResponse(res, false)
+    }
     const repeatPassword = _.get(req, "body.repeatPassword", "")
 
     const user = new User(_.get(req, "body"));

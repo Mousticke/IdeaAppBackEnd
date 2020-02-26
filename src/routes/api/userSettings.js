@@ -5,6 +5,6 @@ const router = express.Router({ mergeParams: true });
 
 router.get('/', getUserSettings);
 
-router.put('/:idSettings', updateUserSettings);
+router.patch('/:idSettings', updateUserSettings);
 
 export default router;
