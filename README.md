@@ -29,7 +29,7 @@ Back-end written in NodeJS for IdeaApp
 - [x] Set up JWT
 - [x] Set up Passport
 
-## CRUD User
+## CRUD User : TO FIX 
 
-- [ ] Delete / Update User
-- [ ] Delete / Update / Create User settings
+- [ ] Update User
+- [ ] Update / Create User settings

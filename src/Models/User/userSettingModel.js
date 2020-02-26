@@ -25,19 +25,9 @@ let userSettingSchema = new Schema({
         type: String,
         required: false,
         default: "",
-    },
-
-    createdAt: {
-        type: Date,
-        default: Date.now
-    },
-
-    updatedAt: {
-        type: Date,
-        default: Date.now
     }
 
-});
+}, {timestamps: true});
 
 
 export const UserSetting = mongoose.model('UserSetting', userSettingSchema);

@@ -3,6 +3,7 @@ import _ from "lodash";
 import ResponseObject from "../helpers/response";
 import { User } from "../Models/User/userModel";
 import { signToken } from '../helpers/authToken';
+import { UserSetting } from '../Models/User/userSettingModel';
 
 const constructResponse = (httpCode, data, originURL, method) => {
     return new ResponseObject(
@@ -60,7 +61,10 @@ export const createUser = async (req, res, next) => {
         const { _id, username, firstname, lastname, email, age } = savedUser
         const token = signToken(savedUser)
 
-        const responseObject = constructResponse(201, { token, _id, username, firstname, lastname, email, age }, _.get(req, "originalUrl", ""), "POST")
+        const userSettings = new UserSetting();
+        const savedDefaultSettings = await userSettings.save()
+
+        const responseObject = constructResponse(201, { token, _id, username, firstname, lastname, email, age, userSettings: savedDefaultSettings }, _.get(req, "originalUrl", ""), "POST")
         return responseObject.returnAPIResponse(res, true)
     } catch (error) {
         const responseObject = constructResponse(500, error, _.get(req, "originalUrl", ""), "PUT");
@@ -91,9 +95,9 @@ export const updateUser = async (req, res, next) => {
         const hashedPassword = await bcrypt.hash(user.password, salt);
         user.password = hashedPassword;
     }
-    const { _id, username, firstname, lastname, email, age } = user
+    const { _id, username, firstname, lastname, email, age, password } = user
     try {
-        await User.replaceOne({ _id: req.params.id }, { username, firstname, lastname, email, age }, { multi: false });
+        await User.replaceOne({ _id: req.params.id }, { username, firstname, lastname, email, age, password }, { multi: false });
     } catch (error) {
         const responseObject = constructResponse(400, error, _.get(req, "originalUrl", ""), "PUT")
         return responseObject.returnAPIResponse(res, false)

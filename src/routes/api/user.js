@@ -6,7 +6,7 @@ import {createUser, getAllUsers, getUserById, loginUser, updateUser} from '../..
 
 const router = express.Router();
 
-router.use("/settings", passport.authenticate('jwt', { session: false }), userSettingsRoute);
+router.use("/:id/settings", passport.authenticate('jwt', { session: false }), userSettingsRoute);
 
 router.get("/", getAllUsers);
 
