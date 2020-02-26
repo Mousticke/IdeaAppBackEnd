@@ -9,27 +9,60 @@ class ResponseObject {
      * @param  {string} responseCode - HTTP code
      * @param  {string} responseData - response data format in JSON
      * @param  {string} apiURL - endpoint called
+     * @param  {string} method - http verb
      * @author Akim Benchiha
      * @constructor
      */
-    constructor(responseCode, responseData, apiURL) {
+    constructor(responseCode, responseData, apiURL, method) {
         this.responseCode = responseCode
         this.responseData = responseData
         this.apiURL = apiURL
+        this.method = method
     }
+
+    /**
+     * Base response for all API endpoints
+     * @returns
+     * @memberof ResponseObject
+     */
+    baseResponse() {
+        return {
+            "code": this.responseCode,
+            "method": this.method,
+            "apiURL": this.apiURL,
+            'timestamps': Date.now()
+        }
+    }
+
     /**
      * @description return the JSON of the response
      * @param  {} isSuccess - Is it an error response or a success response
      * @public
      */
-    returnResponse(isSuccess) {
-        return {
-            "code": this.responseCode,
-            "success": isSuccess,
-            "apiURL": this.apiURL,
-            "data": this.responseData,
-            'timestamps': Date.now()
+    returnResponseData(isSuccess) {
+        let response = {}
+        if (isSuccess)
+            response = {
+                "data": this.responseData
+            }
+
+        else {
+            response = {
+                "error": this.responseData
+            }
         }
+        return Object.assign({}, this.baseResponse(), { success: isSuccess, response });
+    }
+
+    /**
+     * Response sent with status code and object data
+     * @param {*} response
+     * @param {*} isSuccess
+     * @returns
+     * @memberof ResponseObject
+     */
+    returnAPIResponse(response, isSuccess) {
+        return response.status(this.responseCode).send(this.returnResponseData(isSuccess))
     }
 }
 
