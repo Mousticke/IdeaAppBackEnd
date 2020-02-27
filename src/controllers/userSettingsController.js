@@ -13,8 +13,6 @@ const constructResponse = (httpCode, data, originURL, method) => {
 
 export const getUserSettings = async (req, res, next) => {
     if (req.user._id != req.params.id) {
-        console.log(req.user._id)
-        console.log(req.params.id)
         const responseObject = constructResponse(403, "Unauthorized request for these parameters", _.get(req, "originalUrl", ""), "GET")
         return responseObject.returnAPIResponse(res, false)
     }
