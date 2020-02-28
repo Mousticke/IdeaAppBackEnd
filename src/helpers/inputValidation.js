@@ -3,7 +3,7 @@ import _ from "lodash";
 import ResponseObject from "./response";
 
 
-const validateBody = (schema) => {
+export const validateBody = (schema) => {
     return (req, res, next) => {
         const result = schema.validate(_.get(req, "body"))
         const {error} = result
@@ -19,7 +19,7 @@ const validateBody = (schema) => {
     }
 }
 
-const UserRegisterSchemaValidation = Joi.object({
+export const UserRegisterSchemaValidation = Joi.object({
     username: Joi.string().min(4).required(),
     firstname: Joi.string().min(2).required(),
     lastname: Joi.string().min(2).required(),
@@ -29,12 +29,12 @@ const UserRegisterSchemaValidation = Joi.object({
 });
 
 
-const UserLoginSchemaValidation = Joi.object({
+export const UserLoginSchemaValidation = Joi.object({
     username: Joi.string().min(4).required(),
     password: Joi.string().min(6).required(),
 });
 
-const UserInformationSchemaValidation = Joi.object({
+export const UserInformationSchemaValidation = Joi.object({
     username: Joi.string().min(4).required(),
     firstname: Joi.string().min(2).required(),
     lastname: Joi.string().min(2).required(),
@@ -44,4 +44,9 @@ const UserInformationSchemaValidation = Joi.object({
     age: Joi.date()
 });
 
-export {validateBody, UserRegisterSchemaValidation, UserLoginSchemaValidation, UserInformationSchemaValidation}
+export const IdeaSchemaValidation = Joi.object({
+    title: Joi.string().min(4).max(256).required(),
+    details: Joi.string().min(4).max(10000).required(),
+    summary: Joi.string().min(4).max(1024)
+});
+
