@@ -1,5 +1,7 @@
 # IdeaAppBackEnd
 
+[![CircleCI](https://circleci.com/gh/Mousticke/IdeaAppBackEnd.svg?style=svg)](https://circleci.com/gh/Mousticke/IdeaAppBackEnd)
+
 Back-end written in NodeJS for IdeaApp
 
 ## TODO
