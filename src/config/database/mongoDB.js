@@ -1,24 +1,23 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 mongoose.Promise = Promise;
 
-//If node process ends
-process.on("SIGINT", function () {
-  mongoose.connection.close(function () {
+// If node process ends
+process.on('SIGINT', function() {
+  mongoose.connection.close(function() {
     console.log(
-      "Mongoose default connection disconnected through app termination"
+        'Mongoose default connection disconnected through app termination',
     );
     process.exit(0);
   });
 });
 
 export const connectMongoDB = async (connection) => {
-
-  mongoose.connection.on("connected", () => {
+  mongoose.connection.on('connected', () => {
     console.info(`Mongoose connection open to : ${connection}`);
   });
 
-  mongoose.connection.on("disconnected", () => {
+  mongoose.connection.on('disconnected', () => {
     console.info(`Mongoose connection disconnected on : ${connection}`);
   });
 
@@ -26,12 +25,12 @@ export const connectMongoDB = async (connection) => {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
-    useFindAndModify: false
+    useFindAndModify: false,
 
   });
 };
 
 export const closeMongoDB = () => {
   mongoose.connection.close();
-}
+};
 

@@ -1,34 +1,34 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 
-let Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
-let ideaSchema = new Schema({
+const ideaSchema = new Schema({
 
-    userID: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
-    },
+  'userID': {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },
 
-    title: {
-        type: String,
-        required: true,
-        min: 4,
-        max: 256
-    },
+  'title': {
+    type: String,
+    required: true,
+    min: 4,
+    max: 256,
+  },
 
-    "summary":{
-        type: String,
-        min: 2,
-        max: 1024,
-        required: false
-    },
+  'summary': {
+    type: String,
+    min: 2,
+    max: 1024,
+    required: false,
+  },
 
-    details: {
-        type: String,
-        min: 1000,
-        required: true
-    }
+  'details': {
+    type: String,
+    min: 1000,
+    required: true,
+  },
 
 
 }, {timestamps: true});

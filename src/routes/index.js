@@ -3,7 +3,7 @@ import baseRoute from './api';
 import userRoute from './api/user';
 import ideaRoute from './api/idea';
 
-const router = express.Router();
+const router = new express.Router();
 
 router.use('/', baseRoute);
 router.use('/users', userRoute);
