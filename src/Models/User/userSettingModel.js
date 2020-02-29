@@ -4,28 +4,28 @@ const Schema = mongoose.Schema;
 
 const userSettingSchema = new Schema({
 
-  themeName: {
-    type: String,
-    required: false,
-    default: 'Light',
-  },
+    themeName: {
+        type: String,
+        required: false,
+        default: 'Light',
+    },
 
-  newsletter: {
-    type: Boolean,
-    required: true,
-    default: false,
-  },
+    newsletter: {
+        type: Boolean,
+        required: true,
+        default: false,
+    },
 
-  userID: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-  },
+    userID: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    },
 
-  avatar: {
-    type: String,
-    required: false,
-    default: '',
-  },
+    avatar: {
+        type: String,
+        required: false,
+        default: '',
+    },
 
 }, {timestamps: true});
 

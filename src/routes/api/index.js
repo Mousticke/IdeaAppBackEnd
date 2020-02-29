@@ -6,13 +6,13 @@ const router = new express.Router();
 
 
 router.get('/', (req, res, next) => {
-  const responseObject = new ResponseObject(
-      200,
-      'Welcome to base route',
-      _.get(req, 'originalUrl', 'Cannot retrieve api url'),
-      'GET',
-  );
-  return responseObject.returnResponseData(true)(res);
+    const responseObject = new ResponseObject(
+        200,
+        'Welcome to base route',
+        _.get(req, 'originalUrl', 'Cannot retrieve api url'),
+        'GET',
+    );
+    return responseObject.returnResponseData(true)(res);
 });
 
 export default router;

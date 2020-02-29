@@ -4,33 +4,29 @@ mongoose.Promise = Promise;
 
 // If node process ends
 process.on('SIGINT', function() {
-  mongoose.connection.close(function() {
-    console.log(
-        'Mongoose default connection disconnected through app termination',
-    );
-    process.exit(0);
-  });
+    mongoose.connection.close(function() {
+        process.exit(0);
+    });
 });
 
 export const connectMongoDB = async (connection) => {
-  mongoose.connection.on('connected', () => {
-    console.info(`Mongoose connection open to : ${connection}`);
-  });
+    mongoose.connection.on('connected', () => {
+        console.info(`Mongoose connection open to : ${connection}`);
+    });
 
-  mongoose.connection.on('disconnected', () => {
-    console.info(`Mongoose connection disconnected on : ${connection}`);
-  });
+    mongoose.connection.on('disconnected', () => {
+        process.exit(0);
+    });
 
-  await mongoose.connect(connection, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
+    await mongoose.connect(connection, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useCreateIndex: true,
+        useFindAndModify: false,
 
-  });
+    });
 };
 
 export const closeMongoDB = () => {
-  mongoose.connection.close();
+    mongoose.connection.close();
 };
-
