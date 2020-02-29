@@ -14,9 +14,15 @@ import {connectMongoDB, closeMongoDB} from './config/database/mongoDB';
 dotenv.config();
 const app = express();
 const router = new express.Router();
+let mongoDBConnect = `${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_TABLE}`;
+
+
+if (process.env.NODE_ENV === 'test') {
+    mongoDBConnect = `${process.env.REMOTE_DB_HOST}`;
+}
 
 // :${process.env.DB_PORT}/${process.env.DB_TABLE}
-connectMongoDB(`${process.env.REMOTE_DB_HOST}`)
+connectMongoDB(mongoDBConnect)
     .catch((error) => {
         console.error(error);
         closeMongoDB();
@@ -61,8 +67,9 @@ app.use(function(err, req, res, next) {
     res.status(err.statusCode).send(err); // If shouldRedirect is not defined in our error, sends our original err data
 });
 
-app.listen(3000, () => {
+const server = app.listen(3000, () => {
     console.debug(`Server host : ${process.env.HOST} started on port ${process.env.PORT || 3000}`);
 });
 
-export default app;
+export default server;
+

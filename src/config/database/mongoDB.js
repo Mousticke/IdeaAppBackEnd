@@ -14,10 +14,6 @@ export const connectMongoDB = async (connection) => {
         console.info(`Mongoose connection open to : ${connection}`);
     });
 
-    mongoose.connection.on('disconnected', () => {
-        process.exit(0);
-    });
-
     await mongoose.connect(connection, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
