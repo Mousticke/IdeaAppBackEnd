@@ -5,14 +5,11 @@
   "main": "src/index.js",
   "scripts": {
     "start-dev": "cross-env NODE_ENV=development nodemon --exec babel-node src/index.js",
-    "test": "cross-env NODE_ENV=test jest --runInBand --detectOpenHandles --forceExit",
+    "test": "cross-env NODE_ENV=test mocha --require @babel/register 'test/**/*.js' --timeout 5000 --exit",
+    "report": "cross-env NODE_ENV=test nyc --reporter=lcov mocha --require @babel/register 'test/**/*.js' --timeout 5000 --exit",
+    "text-report": "cross-env NODE_ENV=test nyc --reporter=text-summary mocha --require @babel/register 'test/**/*.js' --timeout 5000 --exit",
+    "nyc": "cross-env NODE_ENV=test nyc mocha --require @babel/register 'test/**/*.js' --timeout 5000 --exit",
     "format": "eslint --fix ./src"
-  },
-  "jest": {
-    "testEnvironment": "node",
-    "coveragePathIgnorePatterns": [
-      "/node_modules/"
-    ]
   },
   "repository": {
     "type": "git",
@@ -47,15 +44,24 @@
     "@babel/node": "^7.8.4",
     "@babel/polyfill": "^7.8.3",
     "@babel/preset-env": "^7.8.6",
-    "babel-jest": "^25.1.0",
+    "@babel/register": "^7.8.6",
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
     "cross-env": "^7.0.0",
     "eslint": "^6.8.0",
     "eslint-config-google": "^0.14.0",
-    "eslint-plugin-jest": "^23.8.0",
-    "eslint-plugin-jest-formatting": "^1.2.0",
-    "jest": "^25.1.0",
+    "eslint-plugin-mocha": "^6.3.0",
+    "mocha": "^7.1.0",
     "nodemon": "^2.0.2",
-    "superagent": "^5.2.2",
+    "nyc": "^15.0.0",
     "supertest": "^4.0.2"
+  },
+  "nyc": {
+    "exclude": [
+      "test",
+      "node_modules"
+    ],
+    "cache": false,
+    "report-dir": "./test/report"
   }
 }

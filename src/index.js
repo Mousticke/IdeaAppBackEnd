@@ -67,9 +67,9 @@ app.use(function(err, req, res, next) {
     res.status(err.statusCode).send(err); // If shouldRedirect is not defined in our error, sends our original err data
 });
 
-const server = app.listen(3000, () => {
+app.listen(3000, () => {
     console.debug(`Server host : ${process.env.HOST} started on port ${process.env.PORT || 3000}`);
 });
 
-export default server;
+export default app;
 
