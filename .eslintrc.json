@@ -5,7 +5,8 @@
     },
     "extends": [
         "google",
-        "plugin:jest/recommended"
+        "plugin:jest/recommended",
+        "plugin:jest-formatting/strict"
     ],
     "globals": {
         "Atomics": "readonly",
@@ -16,7 +17,8 @@
         "sourceType": "module"
     },
     "plugins": [
-        "jest"
+        "jest",
+        "jest-formatting"
     ],
     "rules": {
         "curly": "error",
