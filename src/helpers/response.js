@@ -21,20 +21,6 @@ class ResponseObject {
     }
 
     /**
-     * Base response for all API endpoints
-     * @returns
-     * @memberof ResponseObject
-     */
-    baseResponse() {
-        return {
-            "code": this.responseCode,
-            "method": this.method,
-            "apiURL": this.apiURL,
-            'timestamps': Date.now()
-        }
-    }
-
-    /**
      * @description return the JSON of the response
      * @param  {} isSuccess - Is it an error response or a success response
      * @public
@@ -51,19 +37,19 @@ class ResponseObject {
                 "error": this.responseData
             }
         }
-        return Object.assign({}, this.baseResponse(), { success: isSuccess, response });
-    }
 
-    /**
-     * Response sent with status code and object data
-     * @param {*} response
-     * @param {*} isSuccess
-     * @returns
-     * @memberof ResponseObject
-     */
-    returnAPIResponse(response, isSuccess) {
-        return response.status(this.responseCode).send(this.returnResponseData(isSuccess))
+        return (responseAPI) => {
+            let baseResponse ={
+                "code": this.responseCode,
+                "method": this.method,
+                "apiURL": this.apiURL,
+                'timestamps': Date.now()
+            }
+            let constructedResponse = Object.assign({}, baseResponse, { success: isSuccess, response });
+            return responseAPI.status(this.responseCode).send(constructedResponse)
+        }
     }
 }
+
 
 export default ResponseObject;

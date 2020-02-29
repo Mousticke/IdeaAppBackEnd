@@ -12,8 +12,7 @@ router.get('/', (req, res, next) => {
         _.get(req, "originalUrl", "Cannot retrieve api url"),
         "GET"
         )
-        return responseObject.returnAPIResponse(res, true)
-    //return res.status(responseObject.responseCode).send(responseObject.returnResponse(true));
+        return responseObject.returnResponseData(true)(res)
 });
 
 export default router;

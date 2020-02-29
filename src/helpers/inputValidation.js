@@ -13,7 +13,7 @@ export const validateBody = (schema) => {
                {error: _.get(error, "details")[0]},
                 _.get(req, "originalUrl", "Cannot retrieve api url")
             );
-            return res.status(responseObject.responseCode).send(responseObject.returnResponse(false))
+            return responseObject.returnResponseData(false)(res)
         }
         return next();
     }
