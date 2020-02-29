@@ -4,8 +4,7 @@
  * @author Akim Benchiha
  */
 class ResponseObject {
-
-    /**
+  /**
      * @param  {string} responseCode - HTTP code
      * @param  {string} responseData - response data format in JSON
      * @param  {string} apiURL - endpoint called
@@ -13,42 +12,44 @@ class ResponseObject {
      * @author Akim Benchiha
      * @constructor
      */
-    constructor(responseCode, responseData, apiURL, method) {
-        this.responseCode = responseCode
-        this.responseData = responseData
-        this.apiURL = apiURL
-        this.method = method
+  constructor(responseCode, responseData, apiURL, method) {
+    this.responseCode = responseCode;
+    this.responseData = responseData;
+    this.apiURL = apiURL;
+    this.method = method;
+  }
+
+  /**
+   * @param {*} isSuccess
+   * @return {Object} response object from the incoming request
+   * @memberof ResponseObject
+   */
+  returnResponseData(isSuccess) {
+    let response = {};
+    if (isSuccess) {
+      response = {
+        'data': this.responseData,
+      };
+    } else {
+      response = {
+        'error': this.responseData,
+      };
     }
 
-    /**
-     * @description return the JSON of the response
-     * @param  {} isSuccess - Is it an error response or a success response
-     * @public
-     */
-    returnResponseData(isSuccess) {
-        let response = {}
-        if (isSuccess)
-            response = {
-                "data": this.responseData
-            }
-
-        else {
-            response = {
-                "error": this.responseData
-            }
-        }
-
-        return (responseAPI) => {
-            let baseResponse ={
-                "code": this.responseCode,
-                "method": this.method,
-                "apiURL": this.apiURL,
-                'timestamps': Date.now()
-            }
-            let constructedResponse = Object.assign({}, baseResponse, { success: isSuccess, response });
-            return responseAPI.status(this.responseCode).send(constructedResponse)
-        }
-    }
+    return (responseAPI) => {
+      const baseResponse ={
+        'code': this.responseCode,
+        'method': this.method,
+        'apiURL': this.apiURL,
+        'timestamps': Date.now(),
+      };
+      const constructedResponse = Object.assign(
+          {},
+          baseResponse,
+          {success: isSuccess, response});
+      return responseAPI.status(this.responseCode).send(constructedResponse);
+    };
+  }
 }
 
 

@@ -1,18 +1,20 @@
-import express from "express";
+/* eslint-disable max-len */
+import express from 'express';
 import passport from 'passport';
-import { validateBody, IdeaSchemaValidation } from '../../helpers/inputValidation';
-import {getAllIdeas, getIdea, createIdea, deleteIdea, updateIdea} from '../../controllers/ideaController'
+import {validateBody, IdeaSchemaValidation} from '../../helpers/inputValidation';
+import {getAllIdeas, getIdea, createIdea, deleteIdea, updateIdea} from '../../controllers/ideaController';
 
-const router = express.Router();
+const router = new express.Router();
+const authenticateRouteJWT = passport.authenticate('jwt', {session: false});
 
-router.get("/", getAllIdeas);
+router.get('/', getAllIdeas);
 
-router.get("/:id", getIdea);
+router.get('/:id', getIdea);
 
-router.post("/user/:idUser", validateBody(IdeaSchemaValidation), passport.authenticate('jwt', { session: false }), createIdea);
+router.post('/user/:idUser', validateBody(IdeaSchemaValidation), authenticateRouteJWT, createIdea);
 
-router.patch("/:id/user/:idUser", validateBody(IdeaSchemaValidation), passport.authenticate('jwt', { session: false }), updateIdea);
+router.patch('/:id/user/:idUser', validateBody(IdeaSchemaValidation), authenticateRouteJWT, updateIdea);
 
-router.delete("/:id/user/:idUser", passport.authenticate('jwt', { session: false }), deleteIdea);
+router.delete('/:id/user/:idUser', authenticateRouteJWT, deleteIdea);
 
 export default router;
