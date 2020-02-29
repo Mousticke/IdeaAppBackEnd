@@ -8,6 +8,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from './swagger.json';
+import helmet from 'helmet';
 import api from './routes';
 import {connectMongoDB, closeMongoDB} from './config/database/mongoDB';
 
@@ -28,6 +29,7 @@ connectMongoDB(mongoDBConnect)
         closeMongoDB();
     });
 
+app.use(helmet());
 app.use(cors());
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ // Middleware
