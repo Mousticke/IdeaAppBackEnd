@@ -4,7 +4,8 @@
         "node": true
     },
     "extends": [
-        "google"
+        "google",
+        "plugin:jest/recommended"
     ],
     "globals": {
         "Atomics": "readonly",
@@ -14,8 +15,19 @@
         "ecmaVersion": 2018,
         "sourceType": "module"
     },
+    "plugins": [
+        "jest"
+    ],
     "rules": {
         "curly": "error",
-        "linebreak-style": ["error", "windows"]
+        "linebreak-style": [
+            "error",
+            "windows"
+        ],
+        "jest/no-disabled-tests": "warn",
+        "jest/no-focused-tests": "error",
+        "jest/no-identical-title": "error",
+        "jest/prefer-to-have-length": "warn",
+        "jest/valid-expect": "error"
     }
 }
