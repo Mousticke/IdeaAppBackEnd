@@ -14,7 +14,8 @@ dotenv.config();
 const app = express();
 const router = express.Router()
 
-connectMongoDB(`${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_TABLE}`)
+//:${process.env.DB_PORT}/${process.env.DB_TABLE}
+connectMongoDB(`${process.env.REMOTE_DB_HOST}`)
     .catch(error => {
         console.error(error)
         closeMongoDB()

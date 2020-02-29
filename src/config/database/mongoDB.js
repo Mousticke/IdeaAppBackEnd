@@ -12,7 +12,7 @@ process.on("SIGINT", function () {
   });
 });
 
-const connectMongoDB = async (connection) => {
+export const connectMongoDB = async (connection) => {
 
   mongoose.connection.on("connected", () => {
     console.info(`Mongoose connection open to : ${connection}`);
@@ -31,8 +31,7 @@ const connectMongoDB = async (connection) => {
   });
 };
 
-const closeMongoDB = () => {
+export const closeMongoDB = () => {
   mongoose.connection.close();
 }
 
-export { connectMongoDB, closeMongoDB };
