@@ -20,10 +20,7 @@ jobs:
           steps:
             - run: mkdir ~/reports
             # Run mocha
-            - run: 
-              name: test mocha
-              command: npm run test
-              when: always
+            - run: npm run test
 
             - store_test_results:
                 path: reports
