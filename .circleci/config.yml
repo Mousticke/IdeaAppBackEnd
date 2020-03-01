@@ -23,6 +23,7 @@ jobs:
             - run: 
               name: test mocha
               command: npm run test
+              when: always
 
             - store_test_results:
                 path: reports
