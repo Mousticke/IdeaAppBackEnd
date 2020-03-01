@@ -18,19 +18,12 @@ jobs:
       - checkout
       - node/with-cache:
           steps:
-            - run: mkdir ~/reports
             # Run mocha
             - run: npm run test
 
             - store_test_results:
-                path: reports
-                # Upload results
-
-            - store_test_results:
-                path: reports
-
-            - store_artifacts:
-                path: ./reports/mocha/test-results.xml
+                path: ~/test
+                
   build:
     executor:
       name: node/default
