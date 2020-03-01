@@ -19,10 +19,11 @@ jobs:
       - node/with-cache:
           steps:
             # Run mocha
+            - run: mkdir test-results
             - run: npm run test
 
             - store_test_results:
-                path: ~/test
+              path: ./test-results
                 
   build:
     executor:
