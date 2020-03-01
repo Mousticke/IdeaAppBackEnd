@@ -8,7 +8,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import flash from 'connect-flash';
 import swaggerUi from 'swagger-ui-express';
-import swaggerDocument from './swagger.json';
+import swaggerDocument from './config/swagger.json';
 import helmet from 'helmet';
 import api from './routes';
 import {connectMongoDB, closeMongoDB} from './config/database/mongoDB';
