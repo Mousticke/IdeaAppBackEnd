@@ -21,10 +21,9 @@ jobs:
           steps:
             # Run mocha
             - run: npm run test
-
-            - store_test_results:
-              path: test-results
-                
+            
+      - store_test_results:
+              path: test-results          
   build:
     executor:
       name: node/default
