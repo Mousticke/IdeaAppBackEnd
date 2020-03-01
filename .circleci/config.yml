@@ -28,7 +28,7 @@ jobs:
               - run: npm run build
 workflows:
   version: 2
-  install-and-test:
+  install-test-build:
     jobs:
       - install
       - test:
