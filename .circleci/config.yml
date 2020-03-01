@@ -10,6 +10,7 @@ jobs:
       - node/with-cache:
           steps:
             - run: npm install
+            - run: npm install mocha-junit-reporter # just for CircleCI
   test:
     executor:
       name: node/default
@@ -17,15 +18,29 @@ jobs:
       - checkout
       - node/with-cache:
           steps:
-            - run: npm run test
+            - run: mkdir ~/reports
+            # Run mocha
+            - run: 
+              name: test mocha
+              command: npm run test
+
+            - store_test_results:
+                path: reports
+                # Upload results
+
+            - store_test_results:
+                path: reports
+
+            - store_artifacts:
+                path: ./reports/mocha/test-results.xml
   build:
     executor:
       name: node/default
     steps:
-        - checkout
-        - node/with-cache:
-            steps:
-              - run: npm run build
+      - checkout
+      - node/with-cache:
+          steps:
+            - run: npm run build
 workflows:
   version: 2
   install-test-build:
