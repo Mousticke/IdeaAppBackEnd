@@ -25,7 +25,10 @@ jobs:
             - run: npm run test
 
       - store_test_results:
-              path: $CIRCLE_TEST_REPORTS       
+              path: $CIRCLE_TEST_REPORTS
+      
+      - store_artifacts:
+              path: $CIRCLE_TEST_REPORTS
   build:
     executor:
       name: node/default
