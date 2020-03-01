@@ -7,8 +7,8 @@ import _ from 'lodash';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import flash from 'connect-flash';
-import swaggerUi from 'swagger-ui-express';
-import swaggerDocument from './config/swagger.json';
+// import swaggerUi from 'swagger-ui-express';
+// import swaggerDocument from './config/swagger.json';
 import helmet from 'helmet';
 import api from './routes';
 import {connectMongoDB, closeMongoDB} from './config/database/mongoDB';
@@ -61,7 +61,7 @@ router.use(function(req, res, next) {
 });
 
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/api/v1', api);
 app.use(redirectHome);
 
