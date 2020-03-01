@@ -23,7 +23,7 @@ jobs:
             - run: npm run test
 
             - store_test_results:
-              path: ./test-results
+              path: test-results
                 
   build:
     executor:
