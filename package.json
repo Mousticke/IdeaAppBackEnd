@@ -15,7 +15,7 @@
     "build-babel": "cross-env NODE_ENV=production npm install && babel -d ./build ./src -s",
     "build-production": "npm install && npm run format && npm run clean && npm run build-babel",
     "heroku-postbuild": "npm run build-production",
-    "start-production": "npm run build && cross-env NODE_ENV=production node ./build/index.js"
+    "start-production": "cross-env NODE_ENV=production npm run build && node ./build/index.js"
   },
   "repository": {
     "type": "git",
