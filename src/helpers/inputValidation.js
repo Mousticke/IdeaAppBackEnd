@@ -10,8 +10,9 @@ export const validateBody = (schema) => {
         if (error) {
             const responseObject = new ResponseObject(
                 400,
-                {error: _.get(error, 'details')[0]},
+                _.get(error, 'details')[0],
                 _.get(req, 'originalUrl', 'Cannot retrieve api url'),
+                req.method,
             );
             return responseObject.returnResponseData(false)(res);
         }

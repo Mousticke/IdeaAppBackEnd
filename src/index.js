@@ -6,6 +6,7 @@ import bodyParser from 'body-parser';
 import _ from 'lodash';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import flash from 'connect-flash';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from './swagger.json';
 import helmet from 'helmet';
@@ -35,10 +36,13 @@ app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ // Middleware
     extended: true,
 }));
+
+
+app.use(flash());
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(passport.initialize());
-
+app.use(passport.session());
 
 const redirectHome = (req, res, next) => {
     if (_.get(req, 'originalUrl') == '/') {

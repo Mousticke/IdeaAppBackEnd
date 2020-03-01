@@ -78,7 +78,6 @@ export const createUser = async (req, res, next) => {
                 req.method);
             return responseObject.returnResponseData(false)(res);
         }
-
         const savedUser = await user.save();
         savedUser.toJSON();
         const {_id, username, firstname, lastname, email, age} = savedUser;
@@ -116,6 +115,15 @@ export const loginUser = async (req, res, next) => {
         _.get(req, 'originalUrl', ''),
         req.method);
     return responseObject.returnResponseData(true)(res);
+};
+
+export const loginFailureUser = async (req, res, next) => {
+    const responseObject = constructResponse(
+        401,
+        {message: 'Invalid Credential'},
+        _.get(req, 'originalUrl', ''),
+        req.method);
+    return responseObject.returnResponseData(false)(res);
 };
 
 export const updateUser = async (req, res, next) => {

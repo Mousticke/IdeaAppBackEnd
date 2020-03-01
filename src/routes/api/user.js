@@ -3,11 +3,14 @@ import express from 'express';
 import passport from 'passport';
 import userSettingsRoute from './userSettings';
 import {validateBody, UserRegisterSchemaValidation, UserLoginSchemaValidation, UserInformationSchemaValidation} from '../../helpers/inputValidation';
-import {createUser, getAllUsers, getUserById, loginUser, updateUser} from '../../controllers/userController';
+import {createUser, getAllUsers, getUserById, loginUser, updateUser, loginFailureUser} from '../../controllers/userController';
 
 const router = new express.Router();
 const authenticateRouteJWT = passport.authenticate('jwt', {session: false});
-const authenticateRouteLocal = passport.authenticate('local', {session: false});
+const authenticateRouteLocal = passport.authenticate('local', {session: false,
+    failureRedirect: '/api/v1/users/login'});
+
+router.get('/login', loginFailureUser);
 
 router.use('/:id/settings', authenticateRouteJWT, userSettingsRoute);
 
