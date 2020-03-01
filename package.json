@@ -6,7 +6,7 @@
   "scripts": {
     "start-dev": "cross-env NODE_ENV=development nodemon --exec babel-node src/index.js",
     "start-test": "cross-env NODE_ENV=test nodemon --exec babel-node src/index.js",
-    "test": "cross-env NODE_ENV=test mocha --require @babel/register 'test/**/*.test.js' --reporter mocha-circleci-reporter --timeout 10000 --exit --env=jsdom",
+    "test": "cross-env NODE_ENV=test mocha --require @babel/register 'test/**/*.test.js' --reporter mocha-circleci-reporter --timeout 10000 --exit",
     "report": "cross-env NODE_ENV=test nyc --reporter=lcov mocha --require @babel/register 'test/**/*.js' --timeout 5000 --exit",
     "text-report": "cross-env NODE_ENV=test nyc --reporter=text-summary mocha --require @babel/register 'test/**/*.js' --timeout 5000 --exit",
     "nyc": "cross-env NODE_ENV=test nyc mocha --require @babel/register 'test/**/*.js' --reporter mocha-circleci-reporter --timeout 10000 --exit",

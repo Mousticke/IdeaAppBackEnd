@@ -1,41 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="Mocha Tests" time="0.9290" tests="13" failures="0">
-  <testsuite name="Root Suite" timestamp="2020-03-01T22:29:34" tests="0" time="0.0000" failures="0">
+<testsuites name="Mocha Tests" time="0.7710" tests="13" failures="0">
+  <testsuite name="Root Suite" timestamp="2020-03-01T22:33:13" tests="0" time="0.0000" failures="0">
   </testsuite>
-  <testsuite name="User Endpoints " timestamp="2020-03-01T22:29:34" tests="0" file="D:\Documents\Development\IdeaApp\IdeaAppBackEnd\test\user\usersRoute.test.js" time="0.0000" failures="0">
+  <testsuite name="User Endpoints " timestamp="2020-03-01T22:33:13" tests="0" file="D:\Documents\Development\IdeaApp\IdeaAppBackEnd\test\user\usersRoute.test.js" time="0.0000" failures="0">
   </testsuite>
-  <testsuite name="/GET users" timestamp="2020-03-01T22:29:35" tests="1" file="D:\Documents\Development\IdeaApp\IdeaAppBackEnd\test\user\usersRoute.test.js" time="0.1390" failures="0">
-    <testcase name="User Endpoints  /GET users Should GET all the users" time="0.1390" classname="Should GET all the users">
-    </testcase>
-  </testsuite>
-  <testsuite name="/GET users with an id" timestamp="2020-03-01T22:29:35" tests="2" file="D:\Documents\Development\IdeaApp\IdeaAppBackEnd\test\user\usersRoute.test.js" time="0.1110" failures="0">
-    <testcase name="User Endpoints  /GET users with an id Should GET a user" time="0.0700" classname="Should GET a user">
-    </testcase>
-    <testcase name="User Endpoints  /GET users with an id Should return a Bad request : id is not valid" time="0.0410" classname="Should return a Bad request : id is not valid">
+  <testsuite name="/GET users" timestamp="2020-03-01T22:33:14" tests="1" file="D:\Documents\Development\IdeaApp\IdeaAppBackEnd\test\user\usersRoute.test.js" time="0.0540" failures="0">
+    <testcase name="User Endpoints  /GET users Should GET all the users" time="0.0540" classname="Should GET all the users">
     </testcase>
   </testsuite>
-  <testsuite name="/POST log in a user" timestamp="2020-03-01T22:29:36" tests="2" file="D:\Documents\Development\IdeaApp\IdeaAppBackEnd\test\user\usersRoute.test.js" time="0.1840" failures="0">
-    <testcase name="User Endpoints  /POST log in a user Should login a user" time="0.1260" classname="Should login a user">
+  <testsuite name="/GET users with an id" timestamp="2020-03-01T22:33:14" tests="2" file="D:\Documents\Development\IdeaApp\IdeaAppBackEnd\test\user\usersRoute.test.js" time="0.0720" failures="0">
+    <testcase name="User Endpoints  /GET users with an id Should GET a user" time="0.0370" classname="Should GET a user">
     </testcase>
-    <testcase name="User Endpoints  /POST log in a user Should not login a user. Invalid credentials" time="0.0580" classname="Should not login a user. Invalid credentials">
-    </testcase>
-  </testsuite>
-  <testsuite name="/POST create a user" timestamp="2020-03-01T22:29:36" tests="3" file="D:\Documents\Development\IdeaApp\IdeaAppBackEnd\test\user\usersRoute.test.js" time="0.2270" failures="0">
-    <testcase name="User Endpoints  /POST create a user Should create a user" time="0.1830" classname="Should create a user">
-    </testcase>
-    <testcase name="User Endpoints  /POST create a user Should not create a user (Body invalid)" time="0.0050" classname="Should not create a user (Body invalid)">
-    </testcase>
-    <testcase name="User Endpoints  /POST create a user Should not create a user (User exist)" time="0.0390" classname="Should not create a user (User exist)">
+    <testcase name="User Endpoints  /GET users with an id Should return a Bad request : id is not valid" time="0.0350" classname="Should return a Bad request : id is not valid">
     </testcase>
   </testsuite>
-  <testsuite name="/PATCH update a user" timestamp="2020-03-01T22:29:36" tests="5" file="D:\Documents\Development\IdeaApp\IdeaAppBackEnd\test\user\usersRoute.test.js" time="0.2680" failures="0">
-    <testcase name="User Endpoints  /PATCH update a user Should update a user with success" time="0.1420" classname="Should update a user with success">
+  <testsuite name="/POST log in a user" timestamp="2020-03-01T22:33:14" tests="2" file="D:\Documents\Development\IdeaApp\IdeaAppBackEnd\test\user\usersRoute.test.js" time="0.1640" failures="0">
+    <testcase name="User Endpoints  /POST log in a user Should login a user" time="0.1190" classname="Should login a user">
     </testcase>
-    <testcase name="User Endpoints  /PATCH update a user Should not update user. (Password unmatched)" time="0.0340" classname="Should not update user. (Password unmatched)">
+    <testcase name="User Endpoints  /POST log in a user Should not login a user. Invalid credentials" time="0.0450" classname="Should not login a user. Invalid credentials">
     </testcase>
-    <testcase name="User Endpoints  /PATCH update a user Should not update user. (Body not valid)" time="0.0230" classname="Should not update user. (Body not valid)">
+  </testsuite>
+  <testsuite name="/POST create a user" timestamp="2020-03-01T22:33:14" tests="3" file="D:\Documents\Development\IdeaApp\IdeaAppBackEnd\test\user\usersRoute.test.js" time="0.2220" failures="0">
+    <testcase name="User Endpoints  /POST create a user Should create a user" time="0.1780" classname="Should create a user">
     </testcase>
-    <testcase name="User Endpoints  /PATCH update a user Should not update user. (User already exist)" time="0.0350" classname="Should not update user. (User already exist)">
+    <testcase name="User Endpoints  /POST create a user Should not create a user (Body invalid)" time="0.0090" classname="Should not create a user (Body invalid)">
+    </testcase>
+    <testcase name="User Endpoints  /POST create a user Should not create a user (User exist)" time="0.0350" classname="Should not create a user (User exist)">
+    </testcase>
+  </testsuite>
+  <testsuite name="/PATCH update a user" timestamp="2020-03-01T22:33:15" tests="5" file="D:\Documents\Development\IdeaApp\IdeaAppBackEnd\test\user\usersRoute.test.js" time="0.2590" failures="0">
+    <testcase name="User Endpoints  /PATCH update a user Should update a user with success" time="0.1490" classname="Should update a user with success">
+    </testcase>
+    <testcase name="User Endpoints  /PATCH update a user Should not update user. (Password unmatched)" time="0.0350" classname="Should not update user. (Password unmatched)">
+    </testcase>
+    <testcase name="User Endpoints  /PATCH update a user Should not update user. (Body not valid)" time="0.0080" classname="Should not update user. (Body not valid)">
+    </testcase>
+    <testcase name="User Endpoints  /PATCH update a user Should not update user. (User already exist)" time="0.0330" classname="Should not update user. (User already exist)">
     </testcase>
     <testcase name="User Endpoints  /PATCH update a user Should not update user. (Request id invalid from the given token)" time="0.0340" classname="Should not update user. (Request id invalid from the given token)">
     </testcase>
