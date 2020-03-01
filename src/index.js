@@ -20,7 +20,11 @@ let mongoDBConnect = `${process.env.DB_HOST}:${process.env.DB_PORT}/${process.en
 
 
 if (process.env.NODE_ENV === 'test') {
-    mongoDBConnect = `${process.env.REMOTE_DB_HOST}`;
+    mongoDBConnect = `${process.env.REMOTE_DB_HOST_TEST}`;
+}
+
+if (process.env.NODE_ENV === 'production') {
+    mongoDBConnect = `${process.env.REMOTE_DB_HOST_PROD}`;
 }
 
 // :${process.env.DB_PORT}/${process.env.DB_TABLE}
@@ -73,7 +77,7 @@ app.use(function(err, req, res, next) {
     res.status(err.statusCode).send(err); // If shouldRedirect is not defined in our error, sends our original err data
 });
 
-app.listen(3000, () => {
+app.listen(process.env.PORT, () => {
     console.debug(`Server host : ${process.env.HOST} started on port ${process.env.PORT || 3000}`);
 });
 

@@ -12,9 +12,10 @@
     "nyc": "cross-env NODE_ENV=test nyc mocha --require @babel/register 'test/**/*.js' --reporter mocha-circleci-reporter --timeout 10000 --exit",
     "format": "eslint --fix ./src ./test",
     "clean": "rm -rf build && mkdir build",
-    "build-babel": "babel -d ./build ./src -s",
-    "build": "npm run format && npm run test && npm run clean && npm run build-babel",
-    "production": "npm run build && cross-env NODE_ENV=production node ./build/index.js"
+    "build-babel": "cross-env NODE_ENV=production npm install && babel -d ./build ./src -s",
+    "build-production": "npm run format && npm run test && npm run clean && npm run build-babel",
+    "heroku-postbuild": "npm run build-production",
+    "start-production": "npm run build && cross-env NODE_ENV=production node ./build/index.js"
   },
   "repository": {
     "type": "git",
