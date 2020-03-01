@@ -16,10 +16,10 @@ jobs:
       name: node/default
     steps:
       - checkout
+      - run: mkdir test-results
       - node/with-cache:
           steps:
             # Run mocha
-            - run: mkdir test-results
             - run: npm run test
 
             - store_test_results:
