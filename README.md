@@ -63,7 +63,7 @@ Back-end written in NodeJS for IdeaApp
 
 ## Back End Clean (V1)
 
-- [ ] Add Helmet
+- [x] Add Helmet
 - [ ] Do Security check
 - [ ] Do dependencies check
 - [ ] Comment each functions
