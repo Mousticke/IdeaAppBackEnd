@@ -25,7 +25,7 @@ jobs:
             - run: npm run test
 
       - store_test_results:
-              path: MOCHA_FILE        
+              path: $CIRCLE_TEST_REPORTS       
   build:
     executor:
       name: node/default
