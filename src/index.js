@@ -46,7 +46,6 @@ app.use(flash());
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(passport.initialize());
-app.use(passport.session());
 
 const redirectHome = (req, res, next) => {
     if (_.get(req, 'originalUrl') == '/') {

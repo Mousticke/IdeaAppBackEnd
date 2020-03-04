@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
 import _ from 'lodash';
+import passport from 'passport';
 import ResponseObject from '../helpers/response';
 import {User} from '../Models/User/userModel';
 import {signToken} from '../helpers/authToken';
@@ -106,24 +107,37 @@ export const createUser = async (req, res, next) => {
 };
 
 export const loginUser = async (req, res, next) => {
-    const {_id, username, firstname, lastname, email, age} = req.user;
-    const token = signToken(req.user);
+    passport.authenticate('local', {session: false}, (err, user, info) => {
+        if (err || !user) {
+            const responseObject = constructResponse(
+                401,
+                {err, message: info},
+                _.get(req, 'originalUrl', ''),
+                req.method);
+            return responseObject.returnResponseData(false)(res);
+        } else {
+            const {_id, username, firstname, lastname, email, age} = user;
 
-    const responseObject = constructResponse(
-        200,
-        {token, _id, username, firstname, lastname, email, age},
-        _.get(req, 'originalUrl', ''),
-        req.method);
-    return responseObject.returnResponseData(true)(res);
-};
-
-export const loginFailureUser = async (req, res, next) => {
-    const responseObject = constructResponse(
-        401,
-        {message: 'Invalid Credential'},
-        _.get(req, 'originalUrl', ''),
-        req.method);
-    return responseObject.returnResponseData(false)(res);
+            req.login(user, {session: false}, (error) =>{
+                if (error) {
+                    const responseObject = constructResponse(
+                        401,
+                        {error},
+                        _.get(req, 'originalUrl', ''),
+                        req.method);
+                    return responseObject.returnResponseData(false)(res);
+                }
+                const token = signToken(user);
+                res.header('Authorization', 'Bearer '+ token);
+                const responseObject = constructResponse(
+                    200,
+                    {token, _id, username, firstname, lastname, email, age},
+                    _.get(req, 'originalUrl', ''),
+                    req.method);
+                return responseObject.returnResponseData(true)(res);
+            });
+        }
+    })(req, res);
 };
 
 export const updateUser = async (req, res, next) => {

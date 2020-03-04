@@ -156,7 +156,7 @@ describe('User Endpoints ', function() {
                     const apiRoute = `/api/v1/users/login`;
 
                     expect(res.status).to.equal(401);
-                    baseExpect(res.body, code, apiRoute, false, 'GET');
+                    baseExpect(res.body, code, apiRoute, false, 'POST');
                     expect(res.body.response).to.have.property('error');
                     expect(resError).to.not.be.undefined;
                     expect(resError).to.be.an('object');
