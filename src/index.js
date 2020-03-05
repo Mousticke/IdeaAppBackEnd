@@ -17,7 +17,7 @@ import {connectMongoDB, closeMongoDB} from './config/database/mongoDB';
 dotenv.config();
 const app = express();
 const router = new express.Router();
-let mongoDBConnect = `${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_TABLE}`;
+let mongoDBConnect;
 
 switch (process.env.NODE_ENV) {
 case 'development':
@@ -31,9 +31,13 @@ case 'test':
 case 'production':
     mongoDBConnect = `${process.env.REMOTE_DB_HOST_PROD}`;
     break;
+
+default:
+    mongoDBConnect = `${process.env.REMOTE_DB_HOST_DEV}`;
+    break;
 }
 
-// :${process.env.DB_PORT}/${process.env.DB_TABLE}
+// ${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_TABLE}`
 connectMongoDB(mongoDBConnect)
     .catch((error) => {
         console.error(error);
