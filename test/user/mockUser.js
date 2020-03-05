@@ -118,5 +118,6 @@ export const mockUpdateFailureUserExist = () => {
 
 export const deleteAllUsers = (done) => {
     User.deleteMany({}, (err) => {
+        done();
     });
 };

@@ -43,20 +43,11 @@ describe('User Endpoints ', function() {
     before(function(done) {
         deleteAllUsers(done);
 
-        const firstUserPromise = new Promise((resolve, reject) => {
-            resolve(mockCreateFirstUser());
-        });
+        firstUser = mockCreateFirstUser();
+        secondUser = mockCreateSecondUser();
 
-        const secondUserPromise = new Promise((resolve, reject) => {
-            resolve(mockCreateSecondUser());
-        });
-        Promise.all([firstUserPromise, secondUserPromise]).then((user) => {
-            firstUser = user[0];
-            secondUser = user[1];
-            firstUser.save();
-            secondUser.save();
-        });
-        done();
+        firstUser.save();
+        secondUser.save();
     });
 
 
