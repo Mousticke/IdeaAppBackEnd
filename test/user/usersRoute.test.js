@@ -56,6 +56,7 @@ describe('User Endpoints ', function() {
             firstUser.save();
             secondUser.save();
         });
+        done();
     });
 
 
