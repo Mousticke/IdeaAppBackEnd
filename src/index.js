@@ -18,13 +18,18 @@ const app = express();
 const router = new express.Router();
 let mongoDBConnect = `${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_TABLE}`;
 
+switch (process.env.NODE_ENV) {
+case 'development':
+    mongoDBConnect = `${process.env.REMOTE_DB_HOST_DEV}`;
+    break;
 
-if (process.env.NODE_ENV === 'test') {
+case 'test':
     mongoDBConnect = `${process.env.REMOTE_DB_HOST_TEST}`;
-}
+    break;
 
-if (process.env.NODE_ENV === 'production') {
+case 'production':
     mongoDBConnect = `${process.env.REMOTE_DB_HOST_PROD}`;
+    break;
 }
 
 // :${process.env.DB_PORT}/${process.env.DB_TABLE}

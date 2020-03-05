@@ -6,6 +6,7 @@
   "scripts": {
     "start-dev": "cross-env NODE_ENV=development nodemon --exec babel-node src/index.js",
     "start-test": "cross-env NODE_ENV=test nodemon --exec babel-node src/index.js",
+    "start-production": "cross-env NODE_ENV=production npm run build && node ./build/index.js",
     "test": "cross-env NODE_ENV=test mocha --require @babel/register 'test/**/*.test.js' --reporter mocha-circleci-reporter --timeout 10000 --exit",
     "report": "cross-env NODE_ENV=test nyc --reporter=lcov mocha --require @babel/register 'test/**/*.js' --timeout 5000 --exit",
     "text-report": "cross-env NODE_ENV=test nyc --reporter=text-summary mocha --require @babel/register 'test/**/*.js' --timeout 5000 --exit",
@@ -14,8 +15,7 @@
     "clean": "rm -rf build && mkdir build",
     "build-babel": "cross-env NODE_ENV=production npm install && babel -d ./build ./src -s",
     "build-production": "npm install && npm run format && npm run clean && npm run build-babel",
-    "heroku-postbuild": "npm run build-production",
-    "start-production": "cross-env NODE_ENV=production npm run build && node ./build/index.js"
+    "heroku-postbuild": "npm run build-production"
   },
   "repository": {
     "type": "git",
