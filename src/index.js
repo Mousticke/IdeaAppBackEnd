@@ -7,9 +7,10 @@ import _ from 'lodash';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import flash from 'connect-flash';
-import swaggerUi from 'swagger-ui-express';
-import swaggerDocument from './config/swagger.json';
+// import swaggerUi from 'swagger-ui-express';
+// import swaggerDocument from './config/swagger.json';
 import helmet from 'helmet';
+import compression from 'compression';
 import api from './routes';
 import {connectMongoDB, closeMongoDB} from './config/database/mongoDB';
 
@@ -39,6 +40,7 @@ connectMongoDB(mongoDBConnect)
         closeMongoDB();
     });
 
+app.use(compression());
 app.use(helmet());
 app.use(cors());
 app.use(morgan('dev'));
@@ -65,7 +67,7 @@ router.use(function(req, res, next) {
 });
 
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/api/v1', api);
 app.use(redirectHome);
 
