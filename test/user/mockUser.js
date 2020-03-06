@@ -116,8 +116,8 @@ export const mockUpdateFailureUserExist = () => {
     };
 };
 
-export const deleteAllUsers = (done) => {
-    User.deleteMany({}, (err) => {
-        done();
+export const deleteAllUsers = () => {
+    return new Promise((resolve, reject) => {
+        resolve(User.deleteMany());
     });
 };

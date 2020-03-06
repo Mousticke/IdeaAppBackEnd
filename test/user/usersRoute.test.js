@@ -41,13 +41,15 @@ describe('User Endpoints ', function() {
     let validLoginToken = '';
 
     before(function(done) {
-        deleteAllUsers(done);
+        deleteAllUsers().then(()=>{
+            firstUser = mockCreateFirstUser();
+            secondUser = mockCreateSecondUser();
 
-        firstUser = mockCreateFirstUser();
-        secondUser = mockCreateSecondUser();
+            firstUser.save();
+            secondUser.save();
 
-        firstUser.save();
-        secondUser.save();
+            done();
+        });
     });
 
 
