@@ -41,22 +41,14 @@ export const updateUserSettings = async (req, res, next) => {
     }
     const userSettings = new UserSetting(_.get(req, 'body'));
     const {themeName, newsletter, avatar} = userSettings;
-    try {
-        await UserSetting.replaceOne(
-            {_id: req.params.idSettings},
-            {themeName, newsletter, avatar, userID: req.params.id},
-            {multi: false});
-    } catch (error) {
-        const responseObject = constructResponse(
-            400,
-            error,
-            _.get(req, 'originalUrl', ''),
-            req.method);
-        return responseObject.returnResponseData(false)(res);
-    }
+
+    await UserSetting.replaceOne(
+        {_id: req.params.idSettings},
+        {themeName, newsletter, avatar, userID: req.params.id},
+        {multi: false});
     const responseObject = constructResponse(
         200,
-        {themeName, newsletter, avatar},
+        {themeName, newsletter, avatar, userID: req.params.id},
         _.get(req, 'originalUrl', ''),
         req.method);
     return responseObject.returnResponseData(true)(res);

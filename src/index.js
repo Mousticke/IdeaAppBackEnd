@@ -13,6 +13,7 @@ import helmet from 'helmet';
 import compression from 'compression';
 import api from './routes';
 import {connectMongoDB, closeMongoDB} from './config/database/mongoDB';
+import ResponseObject from './helpers/response';
 
 dotenv.config();
 const app = express();
@@ -77,14 +78,27 @@ app.use(redirectHome);
 
 
 app.get('*', (req, res, next) => {
-    const err = new Error(`${req.ip} tried to reach ${req.originalUrl}`); // Tells us which IP tried to reach a particular URL
+    const err = new Error(); // Tells us which IP tried to reach a particular URL
     err.statusCode = 404;
+    err.message = `${req.ip} tried to reach ${req.originalUrl}`;
     next(err);
 });
 
 app.use(function(err, req, res, next) {
-    if (!err.statusCode) err.statusCode = 500; // Sets a generic server error status code if none is part of the err
-    res.status(err.statusCode).send(err); // If shouldRedirect is not defined in our error, sends our original err data
+    const constructResponse = (httpCode, data, originURL, method) => {
+        return new ResponseObject(
+            httpCode,
+            data,
+            originURL,
+            method,
+        );
+    };
+    const responseObject = constructResponse(
+        err.statusCode || 500,
+        err,
+        _.get(req, 'originalUrl', ''),
+        req.method);
+    return responseObject.returnResponseData(false)(res);
 });
 
 app.listen(process.env.PORT, () => {
