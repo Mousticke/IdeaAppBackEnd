@@ -43,9 +43,13 @@ workflows:
   install-test-build:
     jobs:
       - install
-      - test:
+      - test user:
+          requires:
+            - install
+      - test user settings:
           requires:
             - install
       - build:
           requires:
-            - test
+            - test user
+            - test user settings
