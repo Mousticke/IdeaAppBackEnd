@@ -37,7 +37,7 @@ jobs:
       - checkout
       - node/with-cache:
           steps:
-            - run: npm run build
+            - run: npm run build-babel
 workflows:
   version: 2
   install-test-build:

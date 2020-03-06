@@ -14,7 +14,7 @@
     "format": "eslint --fix ./src ./test ./build",
     "clean": "rm -rf build && mkdir build",
     "build-babel": "cross-env NODE_ENV=production npm install && babel -d ./build ./src -s",
-    "build-production": "npm install && npm run format && npm run clean && npm run build-babel",
+    "build-production": "npm install && npm run clean && npm run build-babel && npm run format",
     "heroku-postbuild": "npm run build-production"
   },
   "repository": {
