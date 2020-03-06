@@ -13,37 +13,42 @@ import {
 chai.use(chaiHttp);
 const {expect} = chai;
 
+let firstUser;
+let secondUser;
+let firstUserSettings;
+let secondUserSettings;
+let validLoginToken = '';
+
+const loginUser = () => {
+    return new Promise((resolve) => {
+        chai.request(app)
+            .post('/api/v1/users/login')
+            .send(mockUserLogin(firstUser))
+            .end((err, res) => {
+                const resData = res.body.response.data;
+                validLoginToken = resData.token;
+                resolve();
+            });
+    });
+};
+
 describe('User Settings Endpoints ', function() {
-    let firstUser;
-    let secondUser;
-    let firstUserSettings;
-    let secondUserSettings;
-    let validLoginToken = '';
-
-    before(function(done) {
+    before(async function() {
         deleteAllUserSettings();
-        deleteAllUsers().then(() => {
-            firstUser = mockCreateFirstUser();
-            secondUser = mockCreateSecondUser();
+        deleteAllUsers();
+        firstUser = mockCreateFirstUser();
+        secondUser = mockCreateSecondUser();
 
-            firstUser.save();
-            secondUser.save();
+        await firstUser.save();
+        await secondUser.save();
 
-            firstUserSettings = mockCreateSettings(firstUser._id);
-            secondUserSettings = mockCreateSettings(secondUser._id);
+        firstUserSettings = mockCreateSettings(firstUser._id);
+        secondUserSettings = mockCreateSettings(secondUser._id);
 
-            firstUserSettings.save();
-            secondUserSettings.save();
+        await firstUserSettings.save();
+        await secondUserSettings.save();
 
-            chai.request(app)
-                .post('/api/v1/users/login')
-                .send(mockUserLogin(firstUser))
-                .end((err, res) => {
-                    const resData = res.body.response.data;
-                    validLoginToken = resData.token;
-                    done();
-                });
-        });
+        await loginUser();
     });
 
     describe('/GET userSettings', function() {
