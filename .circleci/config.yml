@@ -11,7 +11,30 @@ jobs:
           steps:
             - run: npm install
             - run: npm install mocha-junit-reporter # just for CircleCI
-  test:
+
+  test-users:
+    executor:
+      name: node/default
+    steps:
+      - checkout
+      - run: mkdir test-results
+      - node/with-cache:
+          steps:
+            # Run mocha
+            - run: npm run test-users
+
+  
+  test-users-settings:
+    executor:
+      name: node/default
+    steps:
+      - checkout
+      - node/with-cache:
+          steps:
+            # Run mocha
+            - run: npm run test-userSettings
+
+  test-reports:
     environment:
       MOCHA_FILE: "$CIRCLE_TEST_REPORTS/test-results.xml"
     executor:
@@ -21,15 +44,13 @@ jobs:
       - run: mkdir test-results
       - node/with-cache:
           steps:
-            # Run mocha
-            - run: npm run test
             - run: npm run nyc
 
       - store_test_results:
-              path: $CIRCLE_TEST_REPORTS
-      
+          path: $CIRCLE_TEST_REPORTS
       - store_artifacts:
-              path: $CIRCLE_TEST_REPORTS
+          path: $CIRCLE_TEST_REPORTS
+
   build:
     executor:
       name: node/default
@@ -46,10 +67,10 @@ workflows:
       - test user:
           requires:
             - install
-      - test user settings:
+      - test-user-settings:
           requires:
             - install
       - build:
           requires:
-            - test user
-            - test user settings
+            - test-user
+            - test-user-settings
