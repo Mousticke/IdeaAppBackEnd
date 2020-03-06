@@ -23,7 +23,6 @@ jobs:
             # Run mocha
             - run: npm run test-users
 
-  
   test-users-settings:
     executor:
       name: node/default
@@ -64,13 +63,16 @@ workflows:
   install-test-build:
     jobs:
       - install
-      - test user:
+      - test-users:
           requires:
             - install
-      - test-user-settings:
+      - test-users-settings:
           requires:
             - install
-      - build:
+      - test-reports:
           requires:
             - test-user
             - test-user-settings
+      - build:
+          requires:
+            - test-reports
