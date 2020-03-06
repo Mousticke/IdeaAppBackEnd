@@ -71,8 +71,8 @@ workflows:
             - install
       - test-reports:
           requires:
-            - test-user
-            - test-user-settings
+            - test-users
+            - test-users-settings
       - build:
           requires:
             - test-reports
