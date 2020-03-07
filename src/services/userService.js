@@ -55,17 +55,15 @@ export class UserService {
 
     /**
      *Create a user (signup function)
-     * @param {*} user
      * @return {Promise<User>} user stored in database
      * @memberof UserService
      */
-    async createUser(user) {
+    async createUser() {
         return await this.user.save();
     }
 
     /**
      *Update a user. Don't create a new user if not exists
-     * @static
      * @param {*} id
      * @memberof UserService
      */
