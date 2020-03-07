@@ -106,5 +106,8 @@ dist
 # Report Test
 test/report/
 
-# Remobe build folder
+# Remove build folder
 build/
+
+# Remove test-result.xml
+test-results.xml
