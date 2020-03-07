@@ -1,55 +1,52 @@
 import _ from 'lodash';
 import ResponseObject from '../helpers/response';
-import {UserSetting} from '../Models/User/userSettingModel';
+import local from '../config/globalization/local.en.json';
+import {UserSettingsService} from '../services/userSettingsService';
 
-const constructResponse = (httpCode, data, originURL, method) => {
-    return new ResponseObject(
-        httpCode,
-        data,
-        originURL,
-        method,
-    );
+
+const baseResponse = (httpCode, apiRoute, method) => {
+    return new ResponseObject(httpCode, null, apiRoute, method);
 };
 
-export const getUserSettings = async (req, res, next) => {
-    if (req.user._id != req.params.id) {
-        const responseObject = constructResponse(403,
-            'Unauthorized request for these parameters',
-            _.get(req, 'originalUrl', ''),
-            req.method);
-        return responseObject.returnResponseData(false)(res);
-    }
-    const userSettings = await UserSetting.findOne(
-        {userID: req.user._id}).populate('userID', '-password');
+const getApiInfo = (req) => {
+    return {
+        apiRoute: _.get(req, 'originalUrl'),
+        apiMethod: _.get(req, 'method'),
+    };
+};
 
-    const responseObject = constructResponse(
-        200,
-        userSettings,
-        _.get(req, 'originalUrl', ''),
-        req.method);
-    return responseObject.returnResponseData(true)(res);
+const resGeneral = local.general;
+
+export const getUserSettings = async (req, res, next) => {
+    const {apiRoute, apiMethod} = getApiInfo(req);
+    if (req.user._id != req.params.id) {
+        return baseResponse(403, apiRoute, apiMethod)
+            .constructResponse(resGeneral.UNAUTHORIZED, false, res);
+    }
+    const idUser = _.get(req, 'user._id', '');
+    const userSettings = await UserSettingsService.findUserSettings(idUser);
+
+    return baseResponse(200, apiRoute, apiMethod)
+        .constructResponse(userSettings, true, res);
 };
 
 export const updateUserSettings = async (req, res, next) => {
+    const idSettings = _.get(req, 'params.idSettings');
+    const idUser = _.get(req, 'params.id');
+    const {apiRoute, apiMethod} = getApiInfo(req);
     if (req.user._id != req.params.id) {
-        const responseObject = constructResponse(
-            403,
-            'Unauthorized request for these parameters',
-            _.get(req, 'originalUrl', ''),
-            req.method);
-        return responseObject.returnResponseData(false)(res);
+        return baseResponse(403, apiRoute, apiMethod)
+            .constructResponse(resGeneral.UNAUTHORIZED, false, res);
     }
-    const userSettings = new UserSetting(_.get(req, 'body'));
-    const {themeName, newsletter, avatar} = userSettings;
+    const userSettingsService = new UserSettingsService(_.get(req, 'body'));
+    const {themeName, newsletter, avatar} = userSettingsService.settings;
 
-    await UserSetting.replaceOne(
-        {_id: req.params.idSettings},
-        {themeName, newsletter, avatar, userID: req.params.id},
-        {multi: false});
-    const responseObject = constructResponse(
-        200,
-        {themeName, newsletter, avatar, userID: req.params.id},
-        _.get(req, 'originalUrl', ''),
-        req.method);
-    return responseObject.returnResponseData(true)(res);
+    await userSettingsService.updateUserSettings(idSettings, idUser);
+
+    return baseResponse(200, apiRoute, apiMethod)
+        .constructResponse(
+            {themeName, newsletter, avatar, userID: req.params.id},
+            true,
+            res,
+        );
 };
