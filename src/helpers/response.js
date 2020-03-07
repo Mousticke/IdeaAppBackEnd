@@ -20,7 +20,20 @@ class ResponseObject {
     }
 
     /**
-   * @param {*} isSuccess
+     *Return the response with all data needed
+     * @param {*} data
+     * @param {boolean} isSuccess
+     * @param {*} res
+     * @return {Object} response constructed
+     * @memberof ResponseObject
+     */
+    constructResponse(data, isSuccess, res) {
+        this.responseData = data;
+        return this.returnResponseData(isSuccess)(res);
+    }
+
+    /**
+   * @param {boolean} isSuccess
    * @return {Object} response object from the incoming request
    * @memberof ResponseObject
    */

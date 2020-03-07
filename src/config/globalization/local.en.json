@@ -1,0 +1,10 @@
+{
+    "general":{
+        "UNAUTHORIZED": "Unauthorized request for these parameters"
+    },
+    "user": {
+        "NOT_EXIST": "User does not exist.",
+        "EMAIL_USERNAME_EXIST": "Email or Username already exist",
+        "PASSWORD_UNMATCHED": "Password does not match"
+    }
+}

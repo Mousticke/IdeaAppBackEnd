@@ -8,16 +8,23 @@ import {createUser, getAllUsers, getUserById, loginUser, updateUser} from '../..
 const router = new express.Router();
 const authenticateRouteJWT = passport.authenticate('jwt', {session: false});
 
-router.use('/:id/settings', authenticateRouteJWT, userSettingsRoute);
+router
+    .use('/:id/settings', authenticateRouteJWT, userSettingsRoute);
 
-router.get('/', getAllUsers);
+router
+    .get('/', getAllUsers);
 
-router.get('/:id', getUserById);
+router
+    .route('/:id')
+    .get(getUserById)
+    .patch(validateBody(UserInformationSchemaValidation), authenticateRouteJWT, updateUser); ;
 
-router.post('/register', validateBody(UserRegisterSchemaValidation), createUser);
+router
+    .post('/register', validateBody(UserRegisterSchemaValidation), createUser);
 
-router.post('/login', validateBody(UserLoginSchemaValidation), loginUser);
+router
+    .post('/login', validateBody(UserLoginSchemaValidation), loginUser);
 
-router.patch('/:id', validateBody(UserInformationSchemaValidation), authenticateRouteJWT, updateUser);
+router;
 
 export default router;

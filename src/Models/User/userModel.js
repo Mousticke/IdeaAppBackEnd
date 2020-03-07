@@ -75,4 +75,14 @@ userSchema.methods.toJSON = function() {
     return obj;
 };
 
+userSchema.methods.hashPassword = async function(password) {
+    try {
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+        return hashedPassword;
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+
 export const User = mongoose.model('User', userSchema);
