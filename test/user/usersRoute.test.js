@@ -31,6 +31,10 @@ describe('User Endpoints ', function() {
         });
     });
 
+    after(function(done) {
+        deleteAllUsers();
+        done();
+    });
 
     describe('/GET users', function() {
         it('Should GET all the users', function(done) {

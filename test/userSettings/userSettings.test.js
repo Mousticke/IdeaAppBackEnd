@@ -51,6 +51,12 @@ describe('User Settings Endpoints ', function() {
         await loginUser();
     });
 
+    after(function(done) {
+        deleteAllUserSettings();
+        deleteAllUsers();
+        done();
+    });
+
     describe('/GET userSettings', function() {
         it('Should get the first user settings', function(done) {
             chai.request(app)
