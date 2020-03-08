@@ -109,5 +109,6 @@ test/report/
 # Remove build folder
 build/
 
-# Remove test-result.xml
+# Remove test-result.xml and coverage
 test-results.xml
+coverage.xml

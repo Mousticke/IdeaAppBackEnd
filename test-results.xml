@@ -1,61 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="Mocha Tests" time="1.1080" tests="19" failures="0">
-  <testsuite name="Root Suite" timestamp="2020-03-08T01:37:21" tests="0" time="0.0000" failures="0">
+<testsuites name="Mocha Tests" time="0.9800" tests="19" failures="0">
+  <testsuite name="Root Suite" timestamp="2020-03-08T02:31:14" tests="0" time="0.0000" failures="0">
   </testsuite>
-  <testsuite name="User Endpoints " timestamp="2020-03-08T01:37:21" tests="0" file="D:\Documents\Development\IdeaApp\IdeaAppBackEnd\test\user\usersRoute.test.js" time="0.0000" failures="0">
+  <testsuite name="User Endpoints " timestamp="2020-03-08T02:31:14" tests="0" file="D:\Documents\Development\IdeaApp\IdeaAppBackEnd\test\user\usersRoute.test.js" time="0.0000" failures="0">
   </testsuite>
-  <testsuite name="/GET users" timestamp="2020-03-08T01:37:21" tests="1" file="D:\Documents\Development\IdeaApp\IdeaAppBackEnd\test\user\usersRoute.test.js" time="0.0770" failures="0">
-    <testcase name="User Endpoints  /GET users Should GET all the users" time="0.0770" classname="Should GET all the users">
-    </testcase>
-  </testsuite>
-  <testsuite name="/GET users with an id" timestamp="2020-03-08T01:37:22" tests="2" file="D:\Documents\Development\IdeaApp\IdeaAppBackEnd\test\user\usersRoute.test.js" time="0.0850" failures="0">
-    <testcase name="User Endpoints  /GET users with an id Should GET a user" time="0.0450" classname="Should GET a user">
-    </testcase>
-    <testcase name="User Endpoints  /GET users with an id Should return a Bad request : id is not valid" time="0.0400" classname="Should return a Bad request : id is not valid">
+  <testsuite name="/GET users" timestamp="2020-03-08T02:31:15" tests="1" file="D:\Documents\Development\IdeaApp\IdeaAppBackEnd\test\user\usersRoute.test.js" time="0.0690" failures="0">
+    <testcase name="User Endpoints  /GET users Should GET all the users" time="0.0690" classname="Should GET all the users">
     </testcase>
   </testsuite>
-  <testsuite name="/POST log in a user" timestamp="2020-03-08T01:37:22" tests="2" file="D:\Documents\Development\IdeaApp\IdeaAppBackEnd\test\user\usersRoute.test.js" time="0.1830" failures="0">
-    <testcase name="User Endpoints  /POST log in a user Should login a user" time="0.1460" classname="Should login a user">
+  <testsuite name="/GET users with an id" timestamp="2020-03-08T02:31:15" tests="2" file="D:\Documents\Development\IdeaApp\IdeaAppBackEnd\test\user\usersRoute.test.js" time="0.0710" failures="0">
+    <testcase name="User Endpoints  /GET users with an id Should GET a user" time="0.0380" classname="Should GET a user">
     </testcase>
-    <testcase name="User Endpoints  /POST log in a user Should not login a user. Invalid credentials" time="0.0370" classname="Should not login a user. Invalid credentials">
-    </testcase>
-  </testsuite>
-  <testsuite name="/POST create a user" timestamp="2020-03-08T01:37:22" tests="3" file="D:\Documents\Development\IdeaApp\IdeaAppBackEnd\test\user\usersRoute.test.js" time="0.2410" failures="0">
-    <testcase name="User Endpoints  /POST create a user Should create a user" time="0.1870" classname="Should create a user">
-    </testcase>
-    <testcase name="User Endpoints  /POST create a user Should not create a user (Body invalid)" time="0.0110" classname="Should not create a user (Body invalid)">
-    </testcase>
-    <testcase name="User Endpoints  /POST create a user Should not create a user (User exist)" time="0.0430" classname="Should not create a user (User exist)">
+    <testcase name="User Endpoints  /GET users with an id Should return a Bad request : id is not valid" time="0.0330" classname="Should return a Bad request : id is not valid">
     </testcase>
   </testsuite>
-  <testsuite name="/PATCH update a user" timestamp="2020-03-08T01:37:22" tests="5" file="D:\Documents\Development\IdeaApp\IdeaAppBackEnd\test\user\usersRoute.test.js" time="0.2310" failures="0">
-    <testcase name="User Endpoints  /PATCH update a user Should update a user with success" time="0.1160" classname="Should update a user with success">
+  <testsuite name="/POST log in a user" timestamp="2020-03-08T02:31:15" tests="2" file="D:\Documents\Development\IdeaApp\IdeaAppBackEnd\test\user\usersRoute.test.js" time="0.1570" failures="0">
+    <testcase name="User Endpoints  /POST log in a user Should login a user" time="0.1230" classname="Should login a user">
     </testcase>
-    <testcase name="User Endpoints  /PATCH update a user Should not update user. (Password unmatched)" time="0.0380" classname="Should not update user. (Password unmatched)">
+    <testcase name="User Endpoints  /POST log in a user Should not login a user. Invalid credentials" time="0.0340" classname="Should not login a user. Invalid credentials">
+    </testcase>
+  </testsuite>
+  <testsuite name="/POST create a user" timestamp="2020-03-08T02:31:15" tests="3" file="D:\Documents\Development\IdeaApp\IdeaAppBackEnd\test\user\usersRoute.test.js" time="0.2170" failures="0">
+    <testcase name="User Endpoints  /POST create a user Should create a user" time="0.1750" classname="Should create a user">
+    </testcase>
+    <testcase name="User Endpoints  /POST create a user Should not create a user (Body invalid)" time="0.0070" classname="Should not create a user (Body invalid)">
+    </testcase>
+    <testcase name="User Endpoints  /POST create a user Should not create a user (User exist)" time="0.0350" classname="Should not create a user (User exist)">
+    </testcase>
+  </testsuite>
+  <testsuite name="/PATCH update a user" timestamp="2020-03-08T02:31:15" tests="5" file="D:\Documents\Development\IdeaApp\IdeaAppBackEnd\test\user\usersRoute.test.js" time="0.2170" failures="0">
+    <testcase name="User Endpoints  /PATCH update a user Should update a user with success" time="0.1100" classname="Should update a user with success">
+    </testcase>
+    <testcase name="User Endpoints  /PATCH update a user Should not update user. (Password unmatched)" time="0.0340" classname="Should not update user. (Password unmatched)">
     </testcase>
     <testcase name="User Endpoints  /PATCH update a user Should not update user. (Body not valid)" time="0.0040" classname="Should not update user. (Body not valid)">
     </testcase>
-    <testcase name="User Endpoints  /PATCH update a user Should not update user. (User already exist)" time="0.0370" classname="Should not update user. (User already exist)">
+    <testcase name="User Endpoints  /PATCH update a user Should not update user. (User already exist)" time="0.0360" classname="Should not update user. (User already exist)">
     </testcase>
-    <testcase name="User Endpoints  /PATCH update a user Should not update user. (Request id invalid from the given token)" time="0.0360" classname="Should not update user. (Request id invalid from the given token)">
-    </testcase>
-  </testsuite>
-  <testsuite name="User Settings Endpoints " timestamp="2020-03-08T01:37:23" tests="0" file="D:\Documents\Development\IdeaApp\IdeaAppBackEnd\test\userSettings\userSettings.test.js" time="0.0000" failures="0">
-  </testsuite>
-  <testsuite name="/GET userSettings" timestamp="2020-03-08T01:37:23" tests="3" file="D:\Documents\Development\IdeaApp\IdeaAppBackEnd\test\userSettings\userSettings.test.js" time="0.1570" failures="0">
-    <testcase name="User Settings Endpoints  /GET userSettings Should get the first user settings" time="0.1000" classname="Should get the first user settings">
-    </testcase>
-    <testcase name="User Settings Endpoints  /GET userSettings Should unauthorized to get user settings" time="0.0370" classname="Should unauthorized to get user settings">
-    </testcase>
-    <testcase name="User Settings Endpoints  /GET userSettings Should unauthorized from bad token" time="0.0200" classname="Should unauthorized from bad token">
+    <testcase name="User Endpoints  /PATCH update a user Should not update user. (Request id invalid from the given token)" time="0.0330" classname="Should not update user. (Request id invalid from the given token)">
     </testcase>
   </testsuite>
-  <testsuite name="/PATCH userSettings" timestamp="2020-03-08T01:37:23" tests="3" file="D:\Documents\Development\IdeaApp\IdeaAppBackEnd\test\userSettings\userSettings.test.js" time="0.1340" failures="0">
-    <testcase name="User Settings Endpoints  /PATCH userSettings Should update user settings" time="0.0740" classname="Should update user settings">
+  <testsuite name="User Settings Endpoints " timestamp="2020-03-08T02:31:15" tests="0" file="D:\Documents\Development\IdeaApp\IdeaAppBackEnd\test\userSettings\userSettings.test.js" time="0.0000" failures="0">
+  </testsuite>
+  <testsuite name="/GET userSettings" timestamp="2020-03-08T02:31:16" tests="3" file="D:\Documents\Development\IdeaApp\IdeaAppBackEnd\test\userSettings\userSettings.test.js" time="0.1380" failures="0">
+    <testcase name="User Settings Endpoints  /GET userSettings Should get the first user settings" time="0.1010" classname="Should get the first user settings">
     </testcase>
-    <testcase name="User Settings Endpoints  /PATCH userSettings Should unauthorized to update user settings" time="0.0490" classname="Should unauthorized to update user settings">
+    <testcase name="User Settings Endpoints  /GET userSettings Should unauthorized to get user settings" time="0.0330" classname="Should unauthorized to get user settings">
     </testcase>
-    <testcase name="User Settings Endpoints  /PATCH userSettings Should unauthorized update from bad token" time="0.0110" classname="Should unauthorized update from bad token">
+    <testcase name="User Settings Endpoints  /GET userSettings Should unauthorized from bad token" time="0.0040" classname="Should unauthorized from bad token">
+    </testcase>
+  </testsuite>
+  <testsuite name="/PATCH userSettings" timestamp="2020-03-08T02:31:16" tests="3" file="D:\Documents\Development\IdeaApp\IdeaAppBackEnd\test\userSettings\userSettings.test.js" time="0.1110" failures="0">
+    <testcase name="User Settings Endpoints  /PATCH userSettings Should update user settings" time="0.0730" classname="Should update user settings">
+    </testcase>
+    <testcase name="User Settings Endpoints  /PATCH userSettings Should unauthorized to update user settings" time="0.0350" classname="Should unauthorized to update user settings">
+    </testcase>
+    <testcase name="User Settings Endpoints  /PATCH userSettings Should unauthorized update from bad token" time="0.0030" classname="Should unauthorized update from bad token">
     </testcase>
   </testsuite>
 </testsuites>

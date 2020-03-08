@@ -13,7 +13,7 @@
     "report": "npm run delete-report && cross-env NODE_ENV=test nyc report --reporter=text-lcov > coverage.lcov && codecov --require @babel/register 'test/**/*.js' --timeout 5000 --exit",
     "text-report": "npm run delete-report && cross-env NODE_ENV=test nyc --reporter=text-summary mocha --require @babel/register 'test/**/*.js' --timeout 5000 --exit",
     "delete-report": "rm -rf test/report",
-    "nyc": "npm run delete-report && cross-env NODE_ENV=test nyc mocha --require @babel/register 'test/**/*.js' --reporter mocha-circleci-reporter > coverage.xml && codecov --timeout 10000 --exit",
+    "nyc": "npm run delete-report && cross-env NODE_ENV=test nyc mocha --require @babel/register 'test/**/*.js' --reporter mocha-circleci-reporter > coverage.xml --timeout 10000 --exit",
     "format": "eslint --fix ./src ./test ./build",
     "clean": "rm -rf build && mkdir build",
     "build-babel": "cross-env NODE_ENV=production npm install && babel -d ./build ./src -s",
