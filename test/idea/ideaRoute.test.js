@@ -293,6 +293,20 @@ describe('Idea Endpoints ', function() {
                     done();
                 });
         });
+
+        it('Should not update idea that does not exist', function(done) {
+            const fakeID = mongoObjectId();
+            const idea = mockUpdateIdeaSuccess();
+            chai.request(app)
+                .patch(`/api/v1/ideas/${fakeID}/user/${firstUser._id}`)
+                .set('Authorization', 'Bearer ' + validLoginToken)
+                .send(idea)
+                .end((err, res) => {
+                    const code = 400;
+                    expect(res.status).to.equal(code);
+                    done();
+                });
+        });
     });
     describe('/DELETE an idea', function() {
         it('Should delete an idea', function(done) {

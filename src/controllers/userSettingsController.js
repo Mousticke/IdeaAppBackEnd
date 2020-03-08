@@ -40,7 +40,7 @@ export const updateUserSettings = async (req, res, next) => {
             .constructResponse(resGeneral.BAD_REQUEST, false, res);
     }
     if (req.user._id != req.params.id ||
-        currentSett.userID._id.toString() != req.user._id.toString()) {
+        findSetting.userID._id.toString() != req.user._id.toString()) {
         return baseResponse(403, apiRoute, apiMethod)
             .constructResponse(resGeneral.UNAUTHORIZED, false, res);
     }

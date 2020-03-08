@@ -187,5 +187,19 @@ describe('User Settings Endpoints ', function() {
                     done();
                 });
         });
+
+        it('Should not update setting that does not exist', function(done) {
+            const fakeID = mongoObjectId();
+            const route =
+            `/api/v1/users/${firstUser._id}/settings/${fakeID}`;
+            chai.request(app)
+                .patch(route)
+                .set('Authorization', 'Bearer ' + validLoginToken)
+                .end((err, res) => {
+                    const code = 400;
+                    expect(res.status).to.equal(code);
+                    done();
+                });
+        });
     });
 });

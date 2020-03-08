@@ -36,7 +36,7 @@ export class UserSettingsService {
      */
     static async findByIdSetting(idSetting) {
         return await UserSetting.findById(idSetting)
-            .select('-__v -userID');
+            .select('-__v');
     }
 
     /**

@@ -30,10 +30,10 @@ export default class IdeaService {
     /**
      *Return a idea based on its ID
      * @static
-     * @function findOneUserById
+     * @function findOneIdeaById
      * @param {*} id
-     * @return {Promise<User>} The idea from the database.
-     * @memberof UserService
+     * @return {Promise<Idea>} The idea from the database.
+     * @memberof IdeaService
      */
     static async findOneIdeaById(id) {
         return await Idea

@@ -67,9 +67,15 @@ export const createIdea = async (req, res, next) => {
 
 export const updateIdea = async (req, res, next) => {
     const {apiRoute, apiMethod} = getApiInfo(req);
-    const currentIdea = await IdeaService.findOneIdeaById(req.params.id);
+    const idIdea = _.get(req, 'params.id');
+    const idUser = _.get(req, 'params.idUser');
 
-    if (req.user._id != req.params.idUser ||
+    const currentIdea = await IdeaService.findOneIdeaById(idIdea);
+    if (currentIdea === null) {
+        return baseResponse(400, apiRoute, apiMethod)
+            .constructResponse(resGeneral.BAD_REQUEST, false, res);
+    }
+    if (req.user._id != idUser ||
         currentIdea.userID._id.toString() != req.user._id.toString()) {
         return baseResponse(403, apiRoute, apiMethod)
             .constructResponse(resGeneral.UNAUTHORIZED, false, res);
@@ -79,7 +85,7 @@ export const updateIdea = async (req, res, next) => {
     const ideaService = new IdeaService(ideaDTO);
     const {_id, title, summary, details} = ideaService.idea;
 
-    await ideaService.updateIdea(req.params.id, req.params.idUser);
+    await ideaService.updateIdea(idIdea, idUser);
 
     return baseResponse(200, apiRoute, apiMethod)
         .constructResponse({_id, title, summary, details, userID: req.user._id},
