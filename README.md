@@ -49,7 +49,7 @@ Back-end written in NodeJS for IdeaApp
 - [x] Set Idea Model
 - [x] Set Idea Controller
 - [x] Set Idea Routes
-- [ ] Unit Test Idea API
+- [x] Unit Test Idea API
 - [ ] Add Idea to Swagger
 
 ## Comments API (V2)
@@ -63,7 +63,7 @@ Back-end written in NodeJS for IdeaApp
 ## Back End Clean (V1)
 
 - [x] Add Helmet
-- [ ] Do Security check
+- [x] Do Security check
 - [x] Do dependencies check
 - [x] Comment each functions
 
