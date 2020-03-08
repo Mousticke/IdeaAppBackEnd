@@ -11,7 +11,6 @@ Back-end written in NodeJS for IdeaApp
 - [x] Set up Express Server
 - [x] Define environment variables
 - [x] Add Swagger for documentation
-- [ ] Set connect-flash
 
 ## MongoDB (V1)
 
@@ -38,8 +37,8 @@ Back-end written in NodeJS for IdeaApp
 
 ## Unit Test
 
-- [ ] Add Unit Test on User
-- [ ] Add Unit Test on User Settings
+- [x] Add Unit Test on User
+- [x] Add Unit Test on User Settings
 
 ## Swagger
 
@@ -65,10 +64,11 @@ Back-end written in NodeJS for IdeaApp
 
 - [x] Add Helmet
 - [ ] Do Security check
-- [ ] Do dependencies check
-- [ ] Comment each functions
+- [x] Do dependencies check
+- [x] Comment each functions
 
 ## Prepare to Deploy (V1)
 
-- [ ] Set Heroku
+- [x] Add circleCI
+- [x] Set Heroku
 - [ ] Test API remote
