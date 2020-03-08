@@ -1,0 +1,14 @@
+coverage:
+  status:
+    project:
+      default: off
+      app:
+        flags: app
+flags:
+  app:
+    paths:
+      - src/
+    assume: true
+  tests:
+    paths:
+      - test/
