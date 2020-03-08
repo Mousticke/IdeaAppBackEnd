@@ -16,10 +16,10 @@ export const mockUserLoginFailure = () => {
 
 export const mockCreateFirstUser = () => {
     return new User({
-        'username': 'Mousticke',
+        'username': 'Mousticke'+Math.floor(Math.random() * 100),
         'firstname': 'Akim',
         'lastname': 'Benchiha',
-        'email': 'akim.benchiha@test.com',
+        'email': 'akim'+Math.floor(Math.random() * 100)+'.benchiha@test.com',
         'age': '11.18.1995',
         'password': '123456',
     });
@@ -27,10 +27,10 @@ export const mockCreateFirstUser = () => {
 
 export const mockCreateSecondUser = () => {
     return new User({
-        'username': 'Mousticke_2',
+        'username': 'Mousticke_'+Math.floor(Math.random() * 100),
         'firstname': 'Akim',
         'lastname': 'Benchiha',
-        'email': 'akim2.benchiha@test.com',
+        'email': 'akim'+Math.floor(Math.random() * 100)+'.benchiha@test.com',
         'age': '11.18.1995',
         'password': '123456',
     });
