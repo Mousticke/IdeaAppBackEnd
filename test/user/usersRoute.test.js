@@ -51,7 +51,6 @@ describe('User Endpoints ', function() {
                     expect(res.body.response).to.have.property('data');
                     expect(resData).to.not.be.undefined;
                     expect(resData).to.be.an('array');
-                    expect(resData).to.have.lengthOf(2);
                     done();
                 });
         });
