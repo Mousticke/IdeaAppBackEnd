@@ -14,23 +14,23 @@ export const mockUserLoginFailure = () => {
     };
 };
 
-export const mockCreateFirstUser = () => {
+export const mockCreateFirstUser = (randomNumber) => {
     return new User({
-        'username': 'Mousticke'+Math.floor(Math.random() * 100),
+        'username': 'Mousticke'+randomNumber,
         'firstname': 'Akim',
         'lastname': 'Benchiha',
-        'email': 'akim'+Math.floor(Math.random() * 100)+'.benchiha@test.com',
+        'email': 'akim'+randomNumber+'.benchiha@test.com',
         'age': '11.18.1995',
         'password': '123456',
     });
 };
 
-export const mockCreateSecondUser = () => {
+export const mockCreateSecondUser = (randomNumber) => {
     return new User({
-        'username': 'Mousticke_'+Math.floor(Math.random() * 100),
+        'username': 'Mousticke_'+randomNumber,
         'firstname': 'Akim',
         'lastname': 'Benchiha',
-        'email': 'akim'+Math.floor(Math.random() * 100)+'.benchiha@test.com',
+        'email': 'akim'+randomNumber+'.benchiha@test.com',
         'age': '11.18.1995',
         'password': '123456',
     });

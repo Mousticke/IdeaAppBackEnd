@@ -12,6 +12,8 @@ import {
 
 chai.use(chaiHttp);
 const {expect} = chai;
+const firstRandom = Math.floor(Math.random() * 100);
+const secondRandom = Math.floor(Math.random() * 100);
 
 let firstUser;
 let secondUser;
@@ -36,8 +38,8 @@ describe('User Settings Endpoints ', function() {
     before(async function() {
         deleteAllUserSettings();
         deleteAllUsers();
-        firstUser = mockCreateFirstUser();
-        secondUser = mockCreateSecondUser();
+        firstUser = mockCreateFirstUser(firstRandom);
+        secondUser = mockCreateSecondUser(secondRandom);
 
         await firstUser.save();
         await secondUser.save();

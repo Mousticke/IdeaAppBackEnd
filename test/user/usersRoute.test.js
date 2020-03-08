@@ -13,7 +13,8 @@ import {mongoObjectId, baseExpect} from '../utils/utils';
 
 chai.use(chaiHttp);
 const {expect} = chai;
-
+const firstRandom = Math.floor(Math.random() * 100);
+const secondRandom = Math.floor(Math.random() * 100);
 describe('User Endpoints ', function() {
     let firstUser;
     let secondUser;
@@ -21,8 +22,8 @@ describe('User Endpoints ', function() {
 
     before(function(done) {
         deleteAllUsers().then(()=>{
-            firstUser = mockCreateFirstUser();
-            secondUser = mockCreateSecondUser();
+            firstUser = mockCreateFirstUser(firstRandom);
+            secondUser = mockCreateSecondUser(secondRandom);
 
             firstUser.save();
             secondUser.save();
@@ -70,10 +71,12 @@ describe('User Endpoints ', function() {
                     expect(res.body.response).to.have.property('data');
                     expect(resData).to.not.be.undefined;
                     expect(resData).to.be.an('object');
-                    expect(resData.username).to.equal('Mousticke');
+                    expect(resData.username).to.equal('Mousticke'+firstRandom);
                     expect(resData.firstname).to.equal('Akim');
                     expect(resData.lastname).to.equal('Benchiha');
-                    expect(resData.email).to.equal('akim.benchiha@test.com');
+                    expect(resData.email)
+                        .to
+                        .equal('akim'+ firstRandom + '.benchiha@test.com');
                     expect(resData.password).to.not.equal('123456');
                     done();
                 });
@@ -112,10 +115,12 @@ describe('User Endpoints ', function() {
                     expect(res.body.response).to.have.property('data');
                     expect(resData).to.not.be.undefined;
                     expect(resData).to.be.an('object');
-                    expect(resData.username).to.equal('Mousticke');
+                    expect(resData.username).to.equal('Mousticke'+firstRandom);
                     expect(resData.firstname).to.equal('Akim');
                     expect(resData.lastname).to.equal('Benchiha');
-                    expect(resData.email).to.equal('akim.benchiha@test.com');
+                    expect(resData.email)
+                        .to
+                        .equal('akim'+ firstRandom + '.benchiha@test.com');
                     expect(resData.password).to.not.equal('123456');
                     expect(resData.token).to.not.be.null;
                     validLoginToken = resData.token;
