@@ -34,6 +34,16 @@ jobs:
           steps:
             # Run mocha
             - run: npm run test-userSettings
+    
+  test-ideas:
+    executor:
+      name: node/default
+    steps:
+      - checkout
+      - node/with-cache:
+          steps:
+            # Run mocha
+            - run: npm run test-ideas
 
   test-reports:
     environment:
@@ -75,10 +85,15 @@ workflows:
           requires:
             - install
             - test-users
+      - test-ideas:
+          requires:
+            - install
+            - test-users-settings
       - test-reports:
           requires:
             - test-users
             - test-users-settings
+            - test-ideas
       - build:
           requires:
             - test-reports

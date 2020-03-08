@@ -1,6 +1,7 @@
 {
     "general":{
-        "UNAUTHORIZED": "Unauthorized request for these parameters"
+        "UNAUTHORIZED": "Unauthorized request for these parameters",
+        "BAD_REQUEST": "Bad request. this resource may not exist"
     },
     "user": {
         "NOT_EXIST": "User does not exist.",

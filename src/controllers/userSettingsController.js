@@ -34,7 +34,13 @@ export const updateUserSettings = async (req, res, next) => {
     const idSettings = _.get(req, 'params.idSettings');
     const idUser = _.get(req, 'params.id');
     const {apiRoute, apiMethod} = getApiInfo(req);
-    if (req.user._id != req.params.id) {
+    const findSetting = await UserSettingsService.findByIdSetting(idSettings);
+    if (findSetting === null) {
+        return baseResponse(400, apiRoute, apiMethod)
+            .constructResponse(resGeneral.BAD_REQUEST, false, res);
+    }
+    if (req.user._id != req.params.id ||
+        currentSett.userID._id.toString() != req.user._id.toString()) {
         return baseResponse(403, apiRoute, apiMethod)
             .constructResponse(resGeneral.UNAUTHORIZED, false, res);
     }

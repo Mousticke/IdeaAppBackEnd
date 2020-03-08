@@ -67,7 +67,10 @@ export const createIdea = async (req, res, next) => {
 
 export const updateIdea = async (req, res, next) => {
     const {apiRoute, apiMethod} = getApiInfo(req);
-    if (req.user._id != req.params.idUser) {
+    const currentIdea = await IdeaService.findOneIdeaById(req.params.id);
+
+    if (req.user._id != req.params.idUser ||
+        currentIdea.userID._id.toString() != req.user._id.toString()) {
         return baseResponse(403, apiRoute, apiMethod)
             .constructResponse(resGeneral.UNAUTHORIZED, false, res);
     }
@@ -87,12 +90,19 @@ export const updateIdea = async (req, res, next) => {
 
 export const deleteIdea = async (req, res, next) => {
     const {apiRoute, apiMethod} = getApiInfo(req);
-    if (req.user._id != req.params.idUser) {
+    const currentIdea = await IdeaService.findOneIdeaById(req.params.id);
+    if (currentIdea === null) {
+        return baseResponse(400, apiRoute, apiMethod)
+            .constructResponse(resGeneral.BAD_REQUEST, false, res);
+    }
+
+    if (req.user._id != req.params.idUser ||
+        currentIdea.userID._id.toString() != req.user._id.toString()) {
         return baseResponse(403, apiRoute, apiMethod)
             .constructResponse(resGeneral.UNAUTHORIZED, false, res);
     }
 
     await IdeaService.deleteIdea(req.params.id);
     return baseResponse(204, apiRoute, apiMethod)
-        .constructResponse(resGeneral.DELETED, true, res);
+        .constructResponse(resIdea.DELETED, true, res);
 };

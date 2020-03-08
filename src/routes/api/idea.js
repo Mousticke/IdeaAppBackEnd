@@ -18,3 +18,6 @@ router.patch('/:id/user/:idUser', validateBody(IdeaSchemaValidation), authentica
 router.delete('/:id/user/:idUser', authenticateRouteJWT, deleteIdea);
 
 export default router;
+
+// TODO : Add get ideas from a user
+// TODO : Add get one idea from a user

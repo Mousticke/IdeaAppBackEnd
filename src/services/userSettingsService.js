@@ -16,7 +16,7 @@ export class UserSettingsService {
     }
 
     /**
-     *Return a user from an email or a username
+     *Return user's settings
      * @static
      * @param {ObjectID} idUser
      * @return {Promise<UserSettings>} The user settings from the database.
@@ -25,6 +25,18 @@ export class UserSettingsService {
     static async findUserSettings(idUser) {
         return await UserSetting.findOne(
             {userID: idUser}).populate('userID', '-password');
+    }
+
+    /**
+     *Return a user setting based on its id
+     * @static
+     * @param {ObjectID} idSetting
+     * @return {Promise<UserSettings>} The user settings from the database.
+     * @memberof UserSettingsService
+     */
+    static async findByIdSetting(idSetting) {
+        return await UserSetting.findById(idSetting)
+            .select('-__v -userID');
     }
 
     /**
