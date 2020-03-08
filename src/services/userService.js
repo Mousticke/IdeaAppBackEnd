@@ -4,7 +4,7 @@ import {User} from '../Models/User/userModel';
  *Database : users
  * @class UserService
  */
-export class UserService {
+export default class UserService {
     /**
      *Creates an instance of UserService.
      * @param {*} user

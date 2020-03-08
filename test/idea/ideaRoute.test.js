@@ -127,6 +127,42 @@ describe('Idea Endpoints ', function() {
         });
     });
 
+    describe('/GET ideas based on a user', function() {
+        it('Should GET all ideas from first User', function(done) {
+            chai.request(app)
+                .get(`/api/v1/ideas/users/${firstUser._id}`)
+                .end((err, res) => {
+                    const resData = res.body.response.data;
+                    const code = 200;
+                    const apiRoute = `/api/v1/ideas/users/${firstUser._id}`;
+
+                    expect(res.status).to.equal(200);
+                    baseExpect(res.body, code, apiRoute, true, 'GET');
+                    expect(res.body.response).to.have.property('data');
+                    expect(resData).to.not.be.undefined;
+                    expect(resData).to.be.an('array');
+                    done();
+                });
+        });
+
+        it('Should return an error. User does not exist', function(done) {
+            const fakeID = mongoObjectId();
+            chai.request(app)
+                .get(`/api/v1/ideas/users/${fakeID}`)
+                .end((err, res) => {
+                    const resError = res.body.response.error;
+                    const code = 400;
+                    const apiRoute = `/api/v1/ideas/users/${fakeID}`;
+
+                    expect(res.status).to.equal(400);
+                    baseExpect(res.body, code, apiRoute, false, 'GET');
+                    expect(res.body.response).to.have.property('error');
+                    expect(resError).to.not.be.undefined;
+                    done();
+                });
+        });
+    });
+
     describe('/POST create an idea', function() {
         it('Should create an new idea', function(done) {
             const idea = mockCreateIdeaFromRoute();

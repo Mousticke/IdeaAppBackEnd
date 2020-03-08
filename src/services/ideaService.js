@@ -31,13 +31,27 @@ export default class IdeaService {
      *Return a idea based on its ID
      * @static
      * @function findOneIdeaById
-     * @param {*} id
+     * @param {ObjectID} id
      * @return {Promise<Idea>} The idea from the database.
      * @memberof IdeaService
      */
     static async findOneIdeaById(id) {
         return await Idea
             .findById(id)
+            .populate('userID', '-password');
+    }
+
+    /**
+     *Return a idea based on a user
+     * @static
+     * @function findByUser
+     * @param {ObjectID} idUser
+     * @return {Promise<Idea>} The idea from the database.
+     * @memberof IdeaService
+     */
+    static async findByUser(idUser) {
+        return await Idea
+            .find({userID: idUser})
             .populate('userID', '-password');
     }
 

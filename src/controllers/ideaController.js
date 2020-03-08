@@ -2,6 +2,7 @@ import _ from 'lodash';
 import ResponseObject from '../helpers/response';
 import local from '../config/globalization/local.en.json';
 import IdeaService from '../services/ideaService';
+import UserService from '../services/userService';
 
 const baseResponse = (httpCode, apiRoute, method) => {
     return new ResponseObject(httpCode, null, apiRoute, method);
@@ -35,6 +36,22 @@ export const getIdea = async (req, res, next) => {
     }
     return baseResponse(200, apiRoute, apiMethod)
         .constructResponse(idea, true, res);
+};
+
+export const getAllIdeasFromUser = async (req, res, next) => {
+    const idUser = _.get(req, 'params.idUser');
+    const {apiRoute, apiMethod} = getApiInfo(req);
+
+    const user = await UserService.findOneUserById(idUser);
+    if (user === null) {
+        return baseResponse(400, apiRoute, apiMethod)
+            .constructResponse(resGeneral.BAD_REQUEST, false, res);
+    }
+
+    const idea = await IdeaService.findByUser(idUser);
+    const responseData = !idea ? resIdea.NOT_EXIST : idea;
+    return baseResponse(200, apiRoute, apiMethod)
+        .constructResponse(responseData, true, res);
 };
 
 export const createIdea = async (req, res, next) => {
