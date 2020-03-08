@@ -2,7 +2,7 @@ version: 2.1
 orbs:
   node: circleci/node@1.1.6
   codecov: codecov/codecov@1.0.5
-  
+
 jobs:
   install:
     executor:
@@ -74,6 +74,7 @@ workflows:
       - test-users-settings:
           requires:
             - install
+            - test-users
       - test-reports:
           requires:
             - test-users
