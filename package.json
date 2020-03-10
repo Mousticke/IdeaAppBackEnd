@@ -43,6 +43,7 @@
     "express": "^4.17.1",
     "express-session": "^1.17.0",
     "helmet": "^3.21.3",
+    "http-status-codes": "^1.4.0",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.15",
     "mongoose": "^5.9.2",
