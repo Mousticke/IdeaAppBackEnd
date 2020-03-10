@@ -40,10 +40,6 @@ Back-end written in NodeJS for IdeaApp
 - [x] Add Unit Test on User
 - [x] Add Unit Test on User Settings
 
-## Swagger
-
-- [ ] Update Swagger API
-
 ## Idea API (V1)
 
 - [x] Set Idea Model
@@ -51,14 +47,6 @@ Back-end written in NodeJS for IdeaApp
 - [x] Set Idea Routes
 - [x] Unit Test Idea API
 - [ ] Add Idea to Swagger
-
-## Comments API (V2)
-
-- [ ] Set Comments Model
-- [ ] Set Comments Controller
-- [ ] Set Comments Routes
-- [ ] Unit Test Comments API
-- [ ] Add Comments to Swagger
 
 ## Back End Clean (V1)
 
@@ -72,3 +60,20 @@ Back-end written in NodeJS for IdeaApp
 - [x] Add circleCI
 - [x] Set Heroku
 - [ ] Test API remote
+
+## Manage Error and HTTP code (V2)
+
+- [ ] use HTTP code lib
+- [ ] set middleware for errors
+
+## Swagger
+
+- [ ] Update Swagger API
+
+## Comments API (V3)
+
+- [ ] Set Comments Model
+- [ ] Set Comments Controller
+- [ ] Set Comments Routes
+- [ ] Unit Test Comments API
+- [ ] Add Comments to Swagger
