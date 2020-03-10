@@ -1,6 +1,6 @@
 import express from 'express';
 import _ from 'lodash';
-import ResponseObject from '../../helpers/response';
+import ResponseObject from '../../helpers/response/response';
 
 const router = new express.Router();
 

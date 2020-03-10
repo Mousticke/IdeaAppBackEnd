@@ -86,11 +86,11 @@ describe('User Endpoints ', function() {
             chai.request(app)
                 .get(`/api/v1/users/${currentID}`)
                 .end((err, res) => {
-                    const code = 400;
+                    const code = 404;
                     const resError = res.body.response.error;
                     const apiRoute = `/api/v1/users/${currentID}`;
 
-                    expect(res.status).to.equal(400);
+                    expect(res.status).to.equal(404);
                     baseExpect(res.body, code, apiRoute, false, 'GET');
                     expect(res.body.response).to.have.property('error');
                     expect(resError).to.not.be.undefined;
@@ -133,10 +133,10 @@ describe('User Endpoints ', function() {
                 .send(mockUserLoginFailure())
                 .end((err, res) => {
                     const resError = res.body.response.error;
-                    const code = 401;
+                    const code = 400;
                     const apiRoute = `/api/v1/users/login`;
 
-                    expect(res.status).to.equal(401);
+                    expect(res.status).to.equal(400);
                     baseExpect(res.body, code, apiRoute, false, 'POST');
                     expect(res.body.response).to.have.property('error');
                     expect(resError).to.not.be.undefined;
@@ -194,11 +194,11 @@ describe('User Endpoints ', function() {
                 .post(`/api/v1/users/register`)
                 .send(mockCreateUserFailureUserExist())
                 .end((err, res) => {
-                    const code = 400;
+                    const code = 409;
                     const resError = res.body.response.error;
                     const apiRoute = `/api/v1/users/register`;
 
-                    expect(res.status).to.equal(400);
+                    expect(res.status).to.equal(409);
                     baseExpect(res.body, code, apiRoute, false, 'POST');
                     expect(res.body.response).to.have.property('error');
                     expect(resError).to.not.be.undefined;
@@ -293,11 +293,11 @@ describe('User Endpoints ', function() {
                     .set('Authorization', 'Bearer ' + validLoginToken)
                     .send(mockUpdateSuccess())
                     .end((err, res) => {
-                        const code = 403;
+                        const code = 401;
                         const resError = res.body.response.error;
                         const apiRoute = `/api/v1/users/${secondUser._id}`;
 
-                        expect(res.status).to.equal(403);
+                        expect(res.status).to.equal(401);
                         baseExpect(res.body, code, apiRoute, false, 'PATCH');
                         expect(res.body.response).to.have.property('error');
                         expect(resError).to.not.be.undefined;

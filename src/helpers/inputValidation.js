@@ -1,20 +1,33 @@
 import Joi from '@hapi/joi';
 import _ from 'lodash';
-import ResponseObject from './response';
+import UnauthorizedError from './response/unauthorized.error';
+import ValidationError from './response/validation.error';
+import BadRequestError from './response/badRequest.error';
 
+
+export const validateUserID = (req) => {
+    if (req.user._id != req.params.id) {
+        throw new UnauthorizedError(
+            'The user ID does not match the subject in the access token',
+        );
+    }
+};
+
+export const validateMatchPassword = (password, confPassword, errMessage) => {
+    if (password !== confPassword) {
+        throw new BadRequestError(errMessage);
+    }
+};
 
 export const validateBody = (schema) => {
     return (req, res, next) => {
         const result = schema.validate(_.get(req, 'body'));
         const {error} = result;
         if (error) {
-            const responseObject = new ResponseObject(
-                400,
+            throw new ValidationError(
+                'Invalid Body',
                 _.get(error, 'details')[0],
-                _.get(req, 'originalUrl', 'Cannot retrieve api url'),
-                req.method,
             );
-            return responseObject.returnResponseData(false)(res);
         }
         return next();
     };

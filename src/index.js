@@ -6,14 +6,18 @@ import bodyParser from 'body-parser';
 import _ from 'lodash';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import flash from 'connect-flash';
-// import swaggerUi from 'swagger-ui-express';
-// import swaggerDocument from './config/swagger.json';
 import helmet from 'helmet';
+import * as HTTPStatus from 'http-status-codes';
 import compression from 'compression';
 import api from './routes';
 import {connectMongoDB, closeMongoDB} from './config/database/mongoDB';
-import ResponseObject from './helpers/response';
+import ResponseObject from './helpers/response/response';
+import ValidationError from './helpers/response/validation.error';
+import NotFoundError from './helpers/response/notFound.error';
+import UnauthorizedError from './helpers/response/unauthorized.error';
+import ExistingError from './helpers/response/existing.error';
+import BadRequestError from './helpers/response/badRequest.error';
+require('express-async-errors');
 
 dotenv.config();
 const app = express();
@@ -38,7 +42,10 @@ default:
     break;
 }
 
-// ${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_TABLE}`
+const baseResponse = (httpCode, apiRoute, method) => {
+    return new ResponseObject(httpCode, null, apiRoute, method);
+};
+
 connectMongoDB(mongoDBConnect)
     .catch((error) => {
         console.error(error);
@@ -54,7 +61,6 @@ app.use(bodyParser.urlencoded({ // Middleware
 }));
 
 
-app.use(flash());
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(passport.initialize());
@@ -72,34 +78,95 @@ router.use(function(req, res, next) {
 });
 
 
-// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/api/v1', api);
 app.use(redirectHome);
 
 
-app.get('*', (req, res, next) => {
-    const err = new Error(); // Tells us which IP tried to reach a particular URL
-    err.statusCode = 404;
-    err.message = `${req.ip} tried to reach ${req.originalUrl}`;
+app.use((req, res, next) => {
+    const err = new Error('Not Found');
+    err.status = HTTPStatus.NOT_FOUND;
     next(err);
 });
 
-app.use(function(err, req, res, next) {
-    const constructResponse = (httpCode, data, originURL, method) => {
-        return new ResponseObject(
-            httpCode,
-            data,
-            originURL,
-            method,
-        );
-    };
-    const responseObject = constructResponse(
-        err.statusCode || 500,
-        err,
-        _.get(req, 'originalUrl', ''),
-        req.method);
-    return responseObject.returnResponseData(false)(res);
+app.use(function handleNotFoundError(error, req, res, next) {
+    const apiRoute = _.get(req, 'originalUrl', '');
+    const apiMethod = _.get(req, 'method', '');
+    if (error instanceof NotFoundError) {
+        return baseResponse(HTTPStatus.NOT_FOUND, apiRoute, apiMethod)
+            .constructResponse({message: error.message, stack: error.stack}, false, res);
+    }
+    next(error);
 });
+
+app.use(function handleExistingError(error, req, res, next) {
+    const apiRoute = _.get(req, 'originalUrl', '');
+    const apiMethod = _.get(req, 'method', '');
+    if (error instanceof ExistingError) {
+        return baseResponse(HTTPStatus.CONFLICT, apiRoute, apiMethod)
+            .constructResponse({message: error.message, stack: error.stack}, false, res);
+    }
+    next(error);
+});
+
+app.use(function handleUnauthorizedError(error, req, res, next) {
+    const apiRoute = _.get(req, 'originalUrl', '');
+    const apiMethod = _.get(req, 'method', '');
+    if (error instanceof UnauthorizedError) {
+        return baseResponse(HTTPStatus.UNAUTHORIZED, apiRoute, apiMethod)
+            .constructResponse({message: error.message, stack: error.stack}, false, res);
+    }
+    next(error);
+});
+
+app.use(function handleBadRequestError(error, req, res, next) {
+    const apiRoute = _.get(req, 'originalUrl', '');
+    const apiMethod = _.get(req, 'method', '');
+    if (error instanceof BadRequestError) {
+        return baseResponse(HTTPStatus.BAD_REQUEST, apiRoute, apiMethod)
+            .constructResponse({message: error.message, stack: error.stack}, false, res);
+    }
+    next(error);
+});
+
+
+app.use(function handleValidationError(error, req, res, next) {
+    const apiRoute = _.get(req, 'originalUrl', '');
+    const apiMethod = _.get(req, 'method', '');
+    if (error instanceof ValidationError) {
+        return baseResponse(HTTPStatus.BAD_REQUEST, apiRoute, apiMethod)
+            .constructResponse({message: error.message, validationErrors: error.validationErrors, stack: error.stack}, false, res);
+    }
+    next(error);
+});
+
+
+app.use(function handleDatabaseError(error, req, res, next) {
+    const apiRoute = _.get(req, 'originalUrl', '');
+    const apiMethod = _.get(req, 'method', '');
+    if (error instanceof DatabaseError) {
+        if (error.code = '11000') {
+            return baseResponse(HTTPStatus.CONFLICT, apiRoute, apiMethod)
+                .constructResponse({message: error.message, type: 'MongoDBError', stack: error.stack}, false, res);
+        } else {
+            return baseResponse(HTTPStatus.SERVICE_UNAVAILABLE, apiRoute, apiMethod)
+                .constructResponse({message: error.message, type: 'MongoDBError', stack: error.stack}, false, res);
+        }
+    }
+    next(error);
+});
+
+
+app.use(function(error, req, res, next) {
+    const apiRoute = _.get(req, 'originalUrl', '');
+    const apiMethod = _.get(req, 'method', '');
+    if (res.headerSent) {
+        return next(error);
+    } else {
+        return baseResponse(HTTPStatus.INTERNAL_SERVER_ERROR, apiRoute, apiMethod)
+            .constructResponse({message: error.message, stack: error.stack}, false, res);
+    }
+});
+
 
 app.listen(process.env.PORT, () => {
     console.debug(`Server host : ${process.env.HOST} started on port ${process.env.PORT || 3000}`);

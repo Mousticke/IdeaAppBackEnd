@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import ResponseObject from '../helpers/response';
+import ResponseObject from '../helpers/response/response';
 import local from '../config/globalization/local.en.json';
 import IdeaService from '../services/ideaService';
 import UserService from '../services/userService';

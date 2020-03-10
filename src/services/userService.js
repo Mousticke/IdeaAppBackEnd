@@ -1,4 +1,6 @@
 import {User} from '../Models/User/userModel';
+import NotFoundError from '../helpers/response/notFound.error';
+import ExistingError from '../helpers/response/existing.error';
 /**
  *Service related to database queries
  *Database : users
@@ -34,23 +36,31 @@ export default class UserService {
      * @memberof UserService
      */
     static async findOneUserById(id) {
-        return await User
+        const user = await User
             .findById(id)
             .select('-__v -password');
+        if (!user) {
+            throw new NotFoundError(`User data NOT FOUND for userID : ${id}`);
+        }
+        return user;
     }
 
     /**
      *Return a user from an email or a username
-     * @return {Promise<User>} The user from the database.
      * @memberof UserService
      */
-    async findOneUser() {
-        return await User.findOne({
+    async findIfOneUserExists() {
+        const user = await User.findOne({
             $or: [
                 {email: this.user.email},
                 {username: this.user.username},
             ],
         });
+        if (user) {
+            throw new ExistingError(
+                `Username or Email already exists`,
+            );
+        }
     }
 
     /**

@@ -50,7 +50,8 @@ passport.use(new LocalStrategy({
         // Return the user
         return done(null, user);
     } catch (error) {
-        done(error, false, {message: 'Something went wrong in the server'});
+        return done(error, false,
+            {message: 'Something went wrong in the server'});
     }
 }));
 

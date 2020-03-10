@@ -1,10 +1,14 @@
 import _ from 'lodash';
 import passport from 'passport';
-import ResponseObject from '../helpers/response';
+import * as HTTPStatus from 'http-status-codes';
+import ResponseObject from '../helpers/response/response';
 import UserService from '../services/userService';
 import {signToken} from '../helpers/authToken';
 import {UserSetting} from '../Models/User/userSettingModel';
 import local from '../config/globalization/local.en.json';
+import {validateUserID,
+    validateMatchPassword} from '../helpers/inputValidation';
+require('express-async-errors');
 
 const baseResponse = (httpCode, apiRoute, method) => {
     return new ResponseObject(httpCode, null, apiRoute, method);
@@ -18,7 +22,6 @@ const getApiInfo = (req) => {
 };
 
 const resUser = local.user;
-const resGeneral = local.general;
 
 export const getAllUsers = async (req, res, next) => {
     const {apiRoute, apiMethod} = getApiInfo(req);
@@ -34,19 +37,15 @@ export const getUserById = async (req, res, next) => {
         return baseResponse(400, apiRoute, apiMethod)
             .constructResponse(resUser.NOT_EXIST, false, res);
     }
-    return baseResponse(200, apiRoute, apiMethod)
+    return baseResponse(HTTPStatus.OK, apiRoute, apiMethod)
         .constructResponse(user, true, res);
 };
 
 export const createUser = async (req, res, next) => {
     const {apiRoute, apiMethod} = getApiInfo(req);
     const userService = new UserService(_.get(req, 'body'));
-    const emailOrUsernameCheckExist = await userService.findOneUser();
+    await userService.findIfOneUserExists();
 
-    if (emailOrUsernameCheckExist) {
-        return baseResponse(400, apiRoute, apiMethod)
-            .constructResponse(resUser.EMAIL_USERNAME_EXIST, false, res);
-    }
     const savedUser = await userService.createUser();
     savedUser.toJSON();
     const {_id, username, firstname, lastname, email, age} = savedUser;
@@ -55,7 +54,7 @@ export const createUser = async (req, res, next) => {
     const userSettings = new UserSetting({userID: savedUser._id});
     const savedDefaultSettings = await userSettings.save();
 
-    return baseResponse(201, apiRoute, apiMethod)
+    return baseResponse(HTTPStatus.CREATED, apiRoute, apiMethod)
         .constructResponse(
             {
                 token, _id, username, firstname, lastname, email, age,
@@ -65,51 +64,45 @@ export const createUser = async (req, res, next) => {
 
 export const loginUser = async (req, res, next) => {
     const {apiRoute, apiMethod} = getApiInfo(req);
-    passport.authenticate('local', {session: false}, (err, user, info) => {
-        if (err || !user) {
-            return baseResponse(401, apiRoute, apiMethod)
-                .constructResponse(
-                    {message: _.get(info, 'message', ''), err},
-                    false,
-                    res,
-                );
-        } else {
+    passport.authenticate('local', {session: false},
+        (err, user, info) => {
+            if (err || !user) {
+                return baseResponse(HTTPStatus.BAD_REQUEST, apiRoute, apiMethod)
+                    .constructResponse(
+                        {message: _.get(info, 'message', ''), err},
+                        false,
+                        res,
+                    );
+            }
             const {_id, username, firstname, lastname, email, age} = user;
             const token = signToken(user);
             res.header('Authorization', 'Bearer '+ token);
 
-            return baseResponse(200, apiRoute, apiMethod)
+            return baseResponse(HTTPStatus.OK, apiRoute, apiMethod)
                 .constructResponse(
                     {token, _id, username, firstname, lastname, email, age},
                     true,
                     res,
                 );
-        }
-    })(req, res);
+        })(req, res);
 };
 
 export const updateUser = async (req, res, next) => {
+    validateUserID(req);
     const {apiRoute, apiMethod} = getApiInfo(req);
-    if (req.user._id != req.params.id) {
-        return baseResponse(403, apiRoute, apiMethod)
-            .constructResponse(resGeneral.UNAUTHORIZED, false, res);
-    }
     const repeatPassword = _.get(req, 'body.repeatPassword', '');
-
     const userService = new UserService(_.get(req, 'body'));
 
-    if (userService.user.password !== repeatPassword) {
-        return baseResponse(400, apiRoute, apiMethod)
-            .constructResponse(resUser.PASSWORD_UNMATCHED, false, res);
-    } else {
-        userService.user.password = await userService.user
-            .hashPassword(userService.user.password);
-    }
+    validateMatchPassword(userService.user.password,
+        repeatPassword, resUser.PASSWORD_UNMATCHED);
+
+    userService.user.password = await userService.user
+        .hashPassword(userService.user.password);
     const {_id, username, firstname, lastname, email, age} = userService.user;
 
     userService.updateUser(req.params.id);
 
-    return baseResponse(200, apiRoute, apiMethod)
+    return baseResponse(HTTPStatus.OK, apiRoute, apiMethod)
         .constructResponse(
             {_id, username, firstname, lastname, email, age},
             true,
