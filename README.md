@@ -70,7 +70,7 @@ Back-end written in NodeJS for IdeaApp
 
 - [x] Use new architecture for user api
 - [x] Use new architecture for idea api
-- [ ] Use new architecture for user settings api
+- [x] Use new architecture for user settings api
 
 ## Test Architecture code (V2)
 
