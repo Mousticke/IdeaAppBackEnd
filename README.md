@@ -76,7 +76,8 @@ Back-end written in NodeJS for IdeaApp
 
 - [x] Test new architecture for user api
 - [x] Test new architecture for idea api
-- [ ] Test new architecture for user settings api
+- [x] Test new architecture for user settings api
+- [x] Run report test for the code coverage
 
 ## Comments API (V3)
 

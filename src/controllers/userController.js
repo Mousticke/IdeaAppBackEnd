@@ -2,7 +2,6 @@ import _ from 'lodash';
 import passport from 'passport';
 import * as HTTPStatus from 'http-status-codes';
 import {signToken} from '../helpers/authToken';
-import {UserSetting} from '../Models/User/userSettingModel';
 import local from '../config/globalization/local.en.json';
 import {validateUserID,
     validateMatchPassword} from '../helpers/inputValidation';
@@ -22,10 +21,12 @@ export default class UserController extends Controller {
     /**
     *Creates an instance of UserController.
     * @param {*} service
+    * @param {*} userSettingsService
     * @memberof UserController
     */
-    constructor(service) {
+    constructor(service, userSettingsService) {
         super(service);
+        this.userSettingsService = userSettingsService;
     }
 
     /**
@@ -81,8 +82,8 @@ export default class UserController extends Controller {
         const {_id, username, firstname, lastname, email, age} = savedUser;
         const token = signToken(savedUser);
 
-        const userSettings = new UserSetting({userID: savedUser._id});
-        const savedDefaultSettings = await userSettings.save();
+        const savedDefaultSettings = await this.userSettingsService
+            .createUserSettings(savedUser._id);
 
         return this.callResponseObject(HTTPStatus.CREATED, {
             token, _id, username, firstname, lastname, email, age,
@@ -132,7 +133,8 @@ export default class UserController extends Controller {
      * @memberof UserController
      */
     async updateUser(req, res, next) {
-        validateUserID(req.user._id, req.params.id);
+        validateUserID(req.user._id, req.params.id,
+            'The user ID does not match the subject in the access token');
         this.apiInformation(req);
         const repeatPassword = _.get(req, 'body.repeatPassword', '');
 

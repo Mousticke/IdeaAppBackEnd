@@ -2,8 +2,7 @@ import _ from 'lodash';
 import * as HTTPStatus from 'http-status-codes';
 import local from '../config/globalization/local.en.json';
 import Controller from './baseController';
-import {validateUserID,
-    validateUserIdForIdea} from '../helpers/inputValidation';
+import {validateUserID} from '../helpers/inputValidation';
 require('express-async-errors');
 
 const resIdea = local.idea;
@@ -78,8 +77,7 @@ export default class IdeaController extends Controller {
         await this.userService.findOneUserById(idUser);
 
         const idea = await this.service.findByUser(idUser);
-        const responseData = !idea ? resIdea.NOT_EXIST : idea;
-        return this.callResponseObject(HTTPStatus.OK, responseData,
+        return this.callResponseObject(HTTPStatus.OK, idea,
             this.apiRoute, this.apiMethod, true, res);
     }
 
@@ -94,7 +92,8 @@ export default class IdeaController extends Controller {
      */
     async createIdea(req, res, next) {
         this.apiInformation(req);
-        validateUserID(req.user._id, req.params.idUser);
+        validateUserID(req.user._id, req.params.idUser,
+            'The user ID does not match the subject in the access token');
         const titleReq = _.get(req, 'body.title', '');
         const summaryReq = _.get(req, 'body.summary', '');
         const detailsReq = _.get(req, 'body.details', '');
@@ -129,10 +128,11 @@ export default class IdeaController extends Controller {
         const idUser = _.get(req, 'params.idUser');
 
         const findIdea = await this.service.findOneIdeaById(idIdea);
-        validateUserID(req.user._id, req.params.idUser);
-        validateUserIdForIdea(findIdea.userID._id, req.user._id);
-        console.log(req.user._id);
-        console.log(req.params.id);
+        validateUserID(req.user._id, req.params.idUser,
+            'The user ID does not match the subject in the access token');
+        validateUserID(req.user._id, findIdea.userID._id,
+            'This idea does not belong to this user');
+
         const ideaDTO = _.get(req, 'body');
 
         const ideaUpdate = await this.service
@@ -156,8 +156,10 @@ export default class IdeaController extends Controller {
         this.apiInformation(req);
         const findIdea = await this.service.findOneIdeaById(req.params.id);
 
-        validateUserID(req.user._id, req.params.idUser);
-        validateUserIdForIdea(findIdea.userID._id, req.user._id);
+        validateUserID(req.user._id, req.params.idUser,
+            'The user ID does not match the subject in the access token');
+        validateUserID(req.user._id, findIdea.userID._id,
+            'This idea does not belong to this user');
 
         await this.service.deleteIdea(req.params.id);
 

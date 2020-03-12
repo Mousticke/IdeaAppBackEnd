@@ -1,58 +1,72 @@
 import _ from 'lodash';
-import ResponseObject from '../helpers/response/response';
-import local from '../config/globalization/local.en.json';
-import {UserSettingsService} from '../services/userSettingsService';
+import Controller from './baseController';
+import * as HTTPStatus from 'http-status-codes';
+import {validateUserID} from '../helpers/inputValidation';
+require('express-async-errors');
 
 
-const baseResponse = (httpCode, apiRoute, method) => {
-    return new ResponseObject(httpCode, null, apiRoute, method);
-};
-
-const getApiInfo = (req) => {
-    return {
-        apiRoute: _.get(req, 'originalUrl'),
-        apiMethod: _.get(req, 'method'),
-    };
-};
-
-const resGeneral = local.general;
-
-export const getUserSettings = async (req, res, next) => {
-    const {apiRoute, apiMethod} = getApiInfo(req);
-    if (req.user._id != req.params.id) {
-        return baseResponse(403, apiRoute, apiMethod)
-            .constructResponse(resGeneral.UNAUTHORIZED, false, res);
+/**
+ * User settings controller
+ *
+ * @export
+ * @class UserSettingsController
+ * @extends {Controller}
+ */
+export default class UserSettingsController extends Controller {
+    /**
+     *Creates an instance of UserSettingsController.
+     * @param {*} service
+     * @memberof UserSettingsController
+     */
+    constructor(service) {
+        super(service);
     }
-    const idUser = _.get(req, 'user._id', '');
-    const userSettings = await UserSettingsService.findUserSettings(idUser);
 
-    return baseResponse(200, apiRoute, apiMethod)
-        .constructResponse(userSettings, true, res);
-};
+    /**
+     * Get User settings
+     *
+     * @param {*} req
+     * @param {*} res
+     * @param {*} next
+     * @return {Response}
+     * @memberof UserSettingsController
+     */
+    async getUserSettings(req, res, next) {
+        this.apiInformation(req);
+        validateUserID(req.user._id, req.params.id,
+            'The user ID does not match the subject in the access token');
+        const idUser = _.get(req, 'user._id', '');
+        const userSettings = await this.service.findUserSettings(idUser);
 
-export const updateUserSettings = async (req, res, next) => {
-    const idSettings = _.get(req, 'params.idSettings');
-    const idUser = _.get(req, 'params.id');
-    const {apiRoute, apiMethod} = getApiInfo(req);
-    const findSetting = await UserSettingsService.findByIdSetting(idSettings);
-    if (findSetting === null) {
-        return baseResponse(400, apiRoute, apiMethod)
-            .constructResponse(resGeneral.BAD_REQUEST, false, res);
+        return this.callResponseObject(HTTPStatus.OK, userSettings,
+            this.apiRoute, this.apiMethod, true, res);
     }
-    if (req.user._id != req.params.id ||
-        findSetting.userID._id.toString() != req.user._id.toString()) {
-        return baseResponse(403, apiRoute, apiMethod)
-            .constructResponse(resGeneral.UNAUTHORIZED, false, res);
+
+    /**
+     * Update user settings for the logged in user
+     *
+     * @param {*} req
+     * @param {*} res
+     * @param {*} next
+     * @return {Response}
+     * @memberof UserSettingsController
+     */
+    async updateUserSettings(req, res, next) {
+        const idSettings = _.get(req, 'params.idSettings');
+        const idUser = _.get(req, 'params.id');
+        const settingsDTO = _.get(req, 'body', '');
+        this.apiInformation(req);
+        const findSetting = await this.service.findByIdSetting(idSettings);
+
+        validateUserID(req.user._id, req.params.id,
+            'The user ID does not match the subject in the access token');
+        validateUserID(req.user._id, findSetting.userID._id,
+            'This settings does not belong to this user');
+
+        const settingsUpdate = await this.service
+            .updateUserSettings(settingsDTO, idSettings, idUser);
+
+        return this.callResponseObject(HTTPStatus.OK, settingsUpdate,
+            this.apiRoute, this.apiMethod, true, res);
     }
-    const userSettingsService = new UserSettingsService(_.get(req, 'body'));
-    const {themeName, newsletter, avatar} = userSettingsService.settings;
-
-    await userSettingsService.updateUserSettings(idSettings, idUser);
-
-    return baseResponse(200, apiRoute, apiMethod)
-        .constructResponse(
-            {themeName, newsletter, avatar, userID: req.params.id},
-            true,
-            res,
-        );
-};
+}

@@ -36,6 +36,17 @@ export const mockCreateSecondUser = (randomNumber) => {
     });
 };
 
+export const mockCreateThirdUser = (randomNumber) => {
+    return new User({
+        'username': 'Mousticke_'+randomNumber,
+        'firstname': 'Akim',
+        'lastname': 'Benchiha',
+        'email': 'akim'+randomNumber+'.benchiha@test.com',
+        'age': '11.18.1995',
+        'password': '123456',
+    });
+};
+
 export const mockCreateUserFromRoute = () => {
     return {
         'username': 'Mousticke_3',

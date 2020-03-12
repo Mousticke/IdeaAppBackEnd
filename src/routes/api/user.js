@@ -5,13 +5,15 @@ import userSettingsRoute from './userSettings';
 import {validateBody, UserRegisterSchemaValidation, UserLoginSchemaValidation, UserInformationSchemaValidation} from '../../helpers/inputValidation';
 import UserController from '../../controllers/userController';
 import UserService from '../../services/userService';
+import UserSettingsService from '../../services/userSettingsService';
 
 const router = new express.Router();
 
 const authenticateRouteJWT = passport.authenticate('jwt', {session: false});
 
 const userService = new UserService();
-const userController = new UserController(userService);
+const userSettingsService = new UserSettingsService();
+const userController = new UserController(userService, userSettingsService);
 
 const getAllUsers = async (req, res, next) => userController.getAllUsers(req, res, next);
 const getUserById = async (req, res, next) => userController.getUserById(req, res, next);

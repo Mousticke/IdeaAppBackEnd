@@ -90,16 +90,14 @@ describe('User Settings Endpoints ', function() {
                 .end((err, res) => {
                     const resData = res.body.response.data;
                     const resError = res.body.response.error;
-                    const code = 403;
+                    const code = 401;
                     const apiRoute = `/api/v1/users/${fakeID}/settings`;
 
-                    expect(res.status).to.equal(403);
+                    expect(res.status).to.equal(401);
                     baseExpect(res.body, code, apiRoute, false, 'GET');
                     expect(res.body.response).to.have.property('error');
                     expect(resData).to.be.undefined;
-                    expect(resError)
-                        .to
-                        .equal('Unauthorized request for these parameters');
+                    expect(resError).to.be.an('object');
                     done();
                 });
         });
@@ -156,16 +154,14 @@ describe('User Settings Endpoints ', function() {
                 .end((err, res) => {
                     const resData = res.body.response.data;
                     const resError = res.body.response.error;
-                    const code = 403;
+                    const code = 401;
                     const apiRoute = route;
 
-                    expect(res.status).to.equal(403);
+                    expect(res.status).to.equal(401);
                     baseExpect(res.body, code, apiRoute, false, 'PATCH');
                     expect(res.body.response).to.have.property('error');
                     expect(resData).to.be.undefined;
-                    expect(resError)
-                        .to
-                        .equal('Unauthorized request for these parameters');
+                    expect(resError).to.be.an('object');
                     done();
                 });
         });
@@ -196,7 +192,7 @@ describe('User Settings Endpoints ', function() {
                 .patch(route)
                 .set('Authorization', 'Bearer ' + validLoginToken)
                 .end((err, res) => {
-                    const code = 400;
+                    const code = 404;
                     expect(res.status).to.equal(code);
                     done();
                 });

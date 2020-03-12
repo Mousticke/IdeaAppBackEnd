@@ -3,7 +3,8 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import {mongoObjectId, baseExpect} from '../utils/utils';
 import {
-    mockCreateFirstUser, mockCreateSecondUser, mockUserLogin,
+    mockCreateFirstUser, mockCreateSecondUser, mockCreateThirdUser,
+    mockUserLogin,
     deleteAllUsers,
 } from '../user/mockUser';
 import {
@@ -15,11 +16,13 @@ import {
 
 chai.use(chaiHttp);
 const {expect} = chai;
-const firstRandom = Math.floor(Math.random() * 100);
-const secondRandom = Math.floor(Math.random() * 100);
+const firstRandom = 103;
+const secondRandom = 102;
+const thirdRandom = 101;
 
 let firstUser;
 let secondUser;
+let thirdUser;
 let firstIdea;
 let secondIdea;
 let validLoginToken = '';
@@ -43,9 +46,11 @@ describe('Idea Endpoints ', function() {
         deleteAllUsers();
         firstUser = mockCreateFirstUser(firstRandom);
         secondUser = mockCreateSecondUser(secondRandom);
+        thirdUser = mockCreateThirdUser(thirdRandom);
 
         await firstUser.save();
         await secondUser.save();
+        await thirdUser.save();
 
         firstIdea = mockCreateIdea(firstUser._id);
         secondIdea = mockCreateIdea(secondUser._id);
@@ -141,6 +146,24 @@ describe('Idea Endpoints ', function() {
                     expect(res.body.response).to.have.property('data');
                     expect(resData).to.not.be.undefined;
                     expect(resData).to.be.an('array');
+                    done();
+                });
+        });
+
+        it('Should GET 0 ideas from first User', function(done) {
+            chai.request(app)
+                .get(`/api/v1/ideas/users/${thirdUser._id}`)
+                .end((err, res) => {
+                    const resData = res.body.response.data;
+                    const code = 200;
+                    const apiRoute = `/api/v1/ideas/users/${thirdUser._id}`;
+
+                    expect(res.status).to.equal(200);
+                    baseExpect(res.body, code, apiRoute, true, 'GET');
+                    expect(res.body.response).to.have.property('data');
+                    expect(resData).to.not.be.undefined;
+                    expect(resData).to.be.an('array');
+                    expect(resData).to.have.length(0);
                     done();
                 });
         });
