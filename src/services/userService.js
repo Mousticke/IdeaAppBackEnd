@@ -9,12 +9,9 @@ import ExistingError from '../helpers/response/existing.error';
 export default class UserService {
     /**
      *Creates an instance of UserService.
-     * @param {*} user
      * @memberof UserService
      */
-    constructor(user) {
-        this.user = new User(user);
-    }
+    constructor() {}
 
     /**
      *Return all users from database
@@ -23,7 +20,7 @@ export default class UserService {
      * @return {Promise<User>} All users from the database.
      * @memberof UserService
      */
-    static async findAllUser() {
+    async findAllUser() {
         return await User.find().select('-__v -password');
     }
 
@@ -35,7 +32,7 @@ export default class UserService {
      * @return {Promise<User>} The user from the database.
      * @memberof UserService
      */
-    static async findOneUserById(id) {
+    async findOneUserById(id) {
         const user = await User
             .findById(id)
             .select('-__v -password');
@@ -47,13 +44,14 @@ export default class UserService {
 
     /**
      *Return a user from an email or a username
+     * @param {*} userDTO
      * @memberof UserService
      */
-    async findIfOneUserExists() {
+    async findIfOneUserExists(userDTO) {
         const user = await User.findOne({
             $or: [
-                {email: this.user.email},
-                {username: this.user.username},
+                {email: userDTO.email},
+                {username: userDTO.username},
             ],
         });
         if (user) {
@@ -65,24 +63,33 @@ export default class UserService {
 
     /**
      *Create a user (signup function)
+     * @param {*} userDTO
      * @return {Promise<User>} user stored in database
      * @memberof UserService
      */
-    async createUser() {
-        return await this.user.save();
+    async createUser(userDTO) {
+        const user = new User(userDTO);
+        return await user.save();
     }
 
     /**
      *Update a user. Don't create a new user if not exists
-     * @param {*} id
+     * @param {ObjectID} id
+     * @param {*} userDTO
      * @memberof UserService
      */
-    async updateUser(id) {
-        const {username, firstname, lastname, email, age, password} = this.user;
+    async updateUser(id, userDTO) {
+        const user = new User(userDTO);
+        user.password = await user
+            .hashPassword(user.password);
+
+        const {username, firstname, lastname, email, age, password} = user;
         await User.replaceOne(
             {_id: id},
             {username, firstname, lastname, email, age, password},
             {multi: false});
+
+        return {_id: id, username, firstname, lastname, email, age};
     }
 }
 

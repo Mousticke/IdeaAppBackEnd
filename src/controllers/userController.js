@@ -1,111 +1,154 @@
 import _ from 'lodash';
 import passport from 'passport';
 import * as HTTPStatus from 'http-status-codes';
-import ResponseObject from '../helpers/response/response';
-import UserService from '../services/userService';
 import {signToken} from '../helpers/authToken';
 import {UserSetting} from '../Models/User/userSettingModel';
 import local from '../config/globalization/local.en.json';
 import {validateUserID,
     validateMatchPassword} from '../helpers/inputValidation';
+import Controller from './baseController';
 require('express-async-errors');
-
-const baseResponse = (httpCode, apiRoute, method) => {
-    return new ResponseObject(httpCode, null, apiRoute, method);
-};
-
-const getApiInfo = (req) => {
-    return {
-        apiRoute: _.get(req, 'originalUrl'),
-        apiMethod: _.get(req, 'method'),
-    };
-};
 
 const resUser = local.user;
 
-export const getAllUsers = async (req, res, next) => {
-    const {apiRoute, apiMethod} = getApiInfo(req);
-    const users = await UserService.findAllUser();
-    return baseResponse(200, apiRoute, apiMethod)
-        .constructResponse(users, true, res);
-};
 
-export const getUserById = async (req, res, next) => {
-    const {apiRoute, apiMethod} = getApiInfo(req);
-    const user = await UserService.findOneUserById(_.get(req, 'params.id'));
-    if (!user) {
-        return baseResponse(400, apiRoute, apiMethod)
-            .constructResponse(resUser.NOT_EXIST, false, res);
+/**
+ * User controller for user route
+ *
+ * @class UserController
+ * @extends {Controller}
+ */
+export default class UserController extends Controller {
+    /**
+    *Creates an instance of UserController.
+    * @param {*} service
+    * @memberof UserController
+    */
+    constructor(service) {
+        super(service);
     }
-    return baseResponse(HTTPStatus.OK, apiRoute, apiMethod)
-        .constructResponse(user, true, res);
-};
 
-export const createUser = async (req, res, next) => {
-    const {apiRoute, apiMethod} = getApiInfo(req);
-    const userService = new UserService(_.get(req, 'body'));
-    await userService.findIfOneUserExists();
+    /**
+     *Get All users controller
+     * @param {*} req
+     * @param {*} res
+     * @param {*} next
+     * @return {Response}
+     * @memberof UserController
+     */
+    async getAllUsers(req, res, next) {
+        this.apiInformation(req);
+        const users = await this.service.findAllUser();
+        return this.callResponseObject(HTTPStatus.OK, users,
+            this.apiRoute, this.apiMethod, true, res);
+    }
 
-    const savedUser = await userService.createUser();
-    savedUser.toJSON();
-    const {_id, username, firstname, lastname, email, age} = savedUser;
-    const token = signToken(savedUser);
+    /**
+     * Get a user based on its ID
+     * If the user is not found, return a not found exception
+     * Code 404.Otherwise return user base information.
+     * @param {*} req
+     * @param {*} res
+     * @param {*} next
+     * @return {Response}
+     * @memberof UserController
+     */
+    async getUserById(req, res, next) {
+        this.apiInformation(req);
+        const user = await this.service
+            .findOneUserById(_.get(req, 'params.id'));
+        if (!user) {
+            return this.callResponseObject(HTTPStatus.BAD_REQUEST,
+                resUser.NOT_EXIST,
+                this.apiRoute, this.apiMethod, false, res);
+        }
+        return this.callResponseObject(HTTPStatus.OK, user,
+            this.apiRoute, this.apiMethod, true, res);
+    }
 
-    const userSettings = new UserSetting({userID: savedUser._id});
-    const savedDefaultSettings = await userSettings.save();
+    /**
+     * Create a user in database.
+     * If the user or email exists, return an existing error exception
+     * Code 409. Otherwise, create a token and login the user
+     * @param {*} req
+     * @param {*} res
+     * @param {*} next
+     * @return {Response}
+     * @memberof UserController
+     */
+    async createUser(req, res, next) {
+        this.apiInformation(req);
+        await this.service.findIfOneUserExists(_.get(req, 'body'));
 
-    return baseResponse(HTTPStatus.CREATED, apiRoute, apiMethod)
-        .constructResponse(
-            {
-                token, _id, username, firstname, lastname, email, age,
-                userSettings: savedDefaultSettings,
-            }, true, res);
-};
+        const savedUser = await this.service.createUser(_.get(req, 'body'));
+        savedUser.toJSON();
+        const {_id, username, firstname, lastname, email, age} = savedUser;
+        const token = signToken(savedUser);
 
-export const loginUser = async (req, res, next) => {
-    const {apiRoute, apiMethod} = getApiInfo(req);
-    passport.authenticate('local', {session: false},
-        (err, user, info) => {
-            if (err || !user) {
-                return baseResponse(HTTPStatus.BAD_REQUEST, apiRoute, apiMethod)
-                    .constructResponse(
+        const userSettings = new UserSetting({userID: savedUser._id});
+        const savedDefaultSettings = await userSettings.save();
+
+        return this.callResponseObject(HTTPStatus.CREATED, {
+            token, _id, username, firstname, lastname, email, age,
+            userSettings: savedDefaultSettings,
+        },
+        this.apiRoute, this.apiMethod, true, res);
+    }
+
+    /**
+     * Login the user. Set username and password
+     * If the user is found and the password is correct,
+     * create a token. Otherwise, return an unauthorized response
+     * provided by passport.
+     * @param {*} req
+     * @param {*} res
+     * @param {*} next
+     * @return {Response}
+     * @memberof UserController
+     */
+    async loginUser(req, res, next) {
+        this.apiInformation(req);
+        passport.authenticate('local', {session: false},
+            (err, user, info) => {
+                if (err || !user) {
+                    return this.callResponseObject(HTTPStatus.BAD_REQUEST,
                         {message: _.get(info, 'message', ''), err},
-                        false,
-                        res,
-                    );
-            }
-            const {_id, username, firstname, lastname, email, age} = user;
-            const token = signToken(user);
-            res.header('Authorization', 'Bearer '+ token);
+                        this.apiRoute, this.apiMethod, false, res);
+                }
+                const {_id, username, firstname, lastname, email, age} = user;
+                const token = signToken(user);
+                res.header('Authorization', 'Bearer '+ token);
 
-            return baseResponse(HTTPStatus.OK, apiRoute, apiMethod)
-                .constructResponse(
+                return this.callResponseObject(HTTPStatus.OK,
                     {token, _id, username, firstname, lastname, email, age},
-                    true,
-                    res,
-                );
-        })(req, res);
-};
+                    this.apiRoute, this.apiMethod, true, res);
+            })(req, res);
+    }
 
-export const updateUser = async (req, res, next) => {
-    validateUserID(req);
-    const {apiRoute, apiMethod} = getApiInfo(req);
-    const repeatPassword = _.get(req, 'body.repeatPassword', '');
-    const userService = new UserService(_.get(req, 'body'));
+    /**
+     * Update a user based on the id.
+     * If the provided id doesn't match the payload's id of tge token
+     * return an unauthorized response.
+     * @param {*} req
+     * @param {*} res
+     * @param {*} next
+     * @return {Response}
+     * @memberof UserController
+     */
+    async updateUser(req, res, next) {
+        validateUserID(req);
+        this.apiInformation(req);
+        const repeatPassword = _.get(req, 'body.repeatPassword', '');
 
-    validateMatchPassword(userService.user.password,
-        repeatPassword, resUser.PASSWORD_UNMATCHED);
+        validateMatchPassword(_.get(req, 'body.password'),
+            repeatPassword, resUser.PASSWORD_UNMATCHED);
 
-    userService.user.password = await userService.user
-        .hashPassword(userService.user.password);
-    const {_id, username, firstname, lastname, email, age} = userService.user;
+        const objectUpdate = await this.service
+            .updateUser(req.params.id, _.get(req, 'body'));
 
-    userService.updateUser(req.params.id);
+        return this.callResponseObject(HTTPStatus.OK,
+            objectUpdate,
+            this.apiRoute, this.apiMethod, true, res);
+    }
+}
 
-    return baseResponse(HTTPStatus.OK, apiRoute, apiMethod)
-        .constructResponse(
-            {_id, username, firstname, lastname, email, age},
-            true,
-            res,
-        );
-};

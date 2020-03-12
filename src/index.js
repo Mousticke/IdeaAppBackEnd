@@ -140,7 +140,7 @@ app.use(function handleValidationError(error, req, res, next) {
 });
 
 
-app.use(function handleDatabaseError(error, req, res, next) {
+/* app.use(function handleDatabaseError(error, req, res, next) {
     const apiRoute = _.get(req, 'originalUrl', '');
     const apiMethod = _.get(req, 'method', '');
     if (error instanceof DatabaseError) {
@@ -153,7 +153,7 @@ app.use(function handleDatabaseError(error, req, res, next) {
         }
     }
     next(error);
-});
+});*/
 
 
 app.use(function(error, req, res, next) {

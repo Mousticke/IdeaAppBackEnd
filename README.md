@@ -63,7 +63,7 @@ Back-end written in NodeJS for IdeaApp
 
 ## Manage Error and HTTP code (V2)
 
-- [ ] use HTTP code lib
+- [x] use HTTP code lib
 - [ ] set middleware for errors
 
 ## Swagger
