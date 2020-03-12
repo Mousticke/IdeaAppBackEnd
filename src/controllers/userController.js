@@ -29,7 +29,7 @@ export default class UserController extends Controller {
     }
 
     /**
-     *Get All users controller
+     *Get All users
      * @param {*} req
      * @param {*} res
      * @param {*} next
@@ -44,9 +44,9 @@ export default class UserController extends Controller {
     }
 
     /**
-     * Get a user based on its ID
+     * Get an user based on its ID
      * If the user is not found, return a not found exception
-     * Code 404.Otherwise return user base information.
+     * Code 404. Otherwise return user base information.
      * @param {*} req
      * @param {*} res
      * @param {*} next
@@ -57,11 +57,7 @@ export default class UserController extends Controller {
         this.apiInformation(req);
         const user = await this.service
             .findOneUserById(_.get(req, 'params.id'));
-        if (!user) {
-            return this.callResponseObject(HTTPStatus.BAD_REQUEST,
-                resUser.NOT_EXIST,
-                this.apiRoute, this.apiMethod, false, res);
-        }
+
         return this.callResponseObject(HTTPStatus.OK, user,
             this.apiRoute, this.apiMethod, true, res);
     }
@@ -136,7 +132,7 @@ export default class UserController extends Controller {
      * @memberof UserController
      */
     async updateUser(req, res, next) {
-        validateUserID(req);
+        validateUserID(req.user._id, req.params.id);
         this.apiInformation(req);
         const repeatPassword = _.get(req, 'body.repeatPassword', '');
 

@@ -64,18 +64,18 @@ Back-end written in NodeJS for IdeaApp
 ## Manage Error and HTTP code (V2)
 
 - [x] Use HTTP code lib
-- [ ] Set middleware for errors
+- [x] Set middleware for errors
 
 ## Update Architecture code (V2)
 
 - [x] Use new architecture for user api
-- [ ] Use new architecture for idea api
+- [x] Use new architecture for idea api
 - [ ] Use new architecture for user settings api
 
 ## Test Architecture code (V2)
 
 - [x] Test new architecture for user api
-- [ ] Test new architecture for idea api
+- [x] Test new architecture for idea api
 - [ ] Test new architecture for user settings api
 
 ## Comments API (V3)

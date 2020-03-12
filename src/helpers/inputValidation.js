@@ -5,10 +5,18 @@ import ValidationError from './response/validation.error';
 import BadRequestError from './response/badRequest.error';
 
 
-export const validateUserID = (req) => {
-    if (req.user._id != req.params.id) {
+export const validateUserID = (userID, paramID) => {
+    if (userID.toString() != paramID.toString()) {
         throw new UnauthorizedError(
             'The user ID does not match the subject in the access token',
+        );
+    }
+};
+
+export const validateUserIdForIdea = (userID, connectUserID) => {
+    if (userID.toString() != connectUserID.toString()) {
+        throw new UnauthorizedError(
+            'This idea does not belong to this user',
         );
     }
 };

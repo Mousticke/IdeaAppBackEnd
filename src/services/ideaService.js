@@ -1,4 +1,5 @@
 import {Idea} from '../Models/Idea/ideaModel';
+import NotFoundError from '../helpers/response/notFound.error';
 
 /**
  *Service related to database queries
@@ -9,47 +10,45 @@ import {Idea} from '../Models/Idea/ideaModel';
 export default class IdeaService {
     /**
      *Creates an instance of IdeaService.
-     * @param {*} idea
      * @memberof IdeaService
      */
-    constructor(idea) {
-        this.idea = new Idea(idea);
-    }
+    constructor() {}
 
     /**
      *Return all ideas from database
-     * @static
      * @function findAllIdeas
      * @return {Promise<Idea>} All ideas from the database.
      * @memberof IdeaService
      */
-    static async findAllIdeas() {
+    async findAllIdeas() {
         return await Idea.find().populate('userID', '-password');
     }
 
     /**
      *Return a idea based on its ID
-     * @static
      * @function findOneIdeaById
      * @param {ObjectID} id
      * @return {Promise<Idea>} The idea from the database.
      * @memberof IdeaService
      */
-    static async findOneIdeaById(id) {
-        return await Idea
+    async findOneIdeaById(id) {
+        const idea = await Idea
             .findById(id)
             .populate('userID', '-password');
+        if (!idea) {
+            throw new NotFoundError(`Idea data NOT FOUND for ideaID : ${id}`);
+        }
+        return idea;
     }
 
     /**
      *Return a idea based on a user
-     * @static
      * @function findByUser
      * @param {ObjectID} idUser
      * @return {Promise<Idea>} The idea from the database.
      * @memberof IdeaService
      */
-    static async findByUser(idUser) {
+    async findByUser(idUser) {
         return await Idea
             .find({userID: idUser})
             .populate('userID', '-password');
@@ -57,34 +56,37 @@ export default class IdeaService {
 
     /**
      *Create an idea
+     * @param {*} ideaDTO
      * @return {Promise<Idea>} idea stored in database
      * @memberof IdeaService
      */
-    async createIdea() {
-        return await this.idea.save();
+    async createIdea(ideaDTO) {
+        const idea = new Idea(ideaDTO);
+        return await idea.save();
     }
 
     /**
      *Update an idea. Don't create a new idea if not exists
+     * @param {*} ideaDTO
      * @param {ObjectID} idIdea
      * @param {ObjectID} idUser
      * @memberof IdeaService
      */
-    async updateIdea(idIdea, idUser) {
-        const {title, summary, details} = this.idea;
+    async updateIdea(ideaDTO, idIdea, idUser) {
+        const {title, summary, details} = ideaDTO;
         await Idea.replaceOne(
             {_id: idIdea},
             {title, summary, details, userID: idUser},
             {multi: false});
+        return {title, summary, details, userID: idUser};
     }
 
     /**
      *Delete an idea based on its id
-     * @static
      * @param {ObjectID} idIdea
      * @memberof IdeaService
      */
-    static async deleteIdea(idIdea) {
+    async deleteIdea(idIdea) {
         await Idea.deleteOne({_id: idIdea});
     }
 }

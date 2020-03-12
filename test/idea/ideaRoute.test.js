@@ -114,11 +114,11 @@ describe('Idea Endpoints ', function() {
             chai.request(app)
                 .get(`/api/v1/ideas/${currentID}`)
                 .end((err, res) => {
-                    const code = 400;
+                    const code = 404;
                     const resError = res.body.response.error;
                     const apiRoute = `/api/v1/ideas/${currentID}`;
 
-                    expect(res.status).to.equal(400);
+                    expect(res.status).to.equal(404);
                     baseExpect(res.body, code, apiRoute, false, 'GET');
                     expect(res.body.response).to.have.property('error');
                     expect(resError).to.not.be.undefined;
@@ -151,10 +151,10 @@ describe('Idea Endpoints ', function() {
                 .get(`/api/v1/ideas/users/${fakeID}`)
                 .end((err, res) => {
                     const resError = res.body.response.error;
-                    const code = 400;
+                    const code = 404;
                     const apiRoute = `/api/v1/ideas/users/${fakeID}`;
 
-                    expect(res.status).to.equal(400);
+                    expect(res.status).to.equal(404);
                     baseExpect(res.body, code, apiRoute, false, 'GET');
                     expect(res.body.response).to.have.property('error');
                     expect(resError).to.not.be.undefined;
@@ -195,14 +195,14 @@ describe('Idea Endpoints ', function() {
                 .send(idea)
                 .end((err, res) => {
                     const resError = res.body.response.error;
-                    const code = 403;
+                    const code = 401;
                     const apiRoute = `/api/v1/ideas/user/${secondUser._id}`;
 
-                    expect(res.status).to.equal(403);
+                    expect(res.status).to.equal(401);
                     baseExpect(res.body, code, apiRoute, false, 'POST');
                     expect(res.body.response).to.have.property('error');
                     expect(resError).to.not.be.undefined;
-                    expect(resError).to.be.an('string');
+                    expect(resError).to.be.an('object');
                     done();
                 });
         });
@@ -278,11 +278,11 @@ describe('Idea Endpoints ', function() {
                 .send(idea)
                 .end((err, res) => {
                     const resError = res.body.response.error;
-                    const code = 403;
+                    const code = 401;
                     const apiRoute =
                     `/api/v1/ideas/${secondIdea._id}/user/${firstUser._id}`;
 
-                    expect(res.status).to.equal(403);
+                    expect(res.status).to.equal(401);
                     baseExpect(res.body, code, apiRoute, false, 'PATCH');
                     expect(res.body.response).to.have.property('error');
                     expect(resError).to.not.be.undefined;
@@ -298,11 +298,11 @@ describe('Idea Endpoints ', function() {
                 .send(idea)
                 .end((err, res) => {
                     const resError = res.body.response.error;
-                    const code = 403;
+                    const code = 401;
                     const apiRoute =
                     `/api/v1/ideas/${firstIdea._id}/user/${secondUser._id}`;
 
-                    expect(res.status).to.equal(403);
+                    expect(res.status).to.equal(401);
                     baseExpect(res.body, code, apiRoute, false, 'PATCH');
                     expect(res.body.response).to.have.property('error');
                     expect(resError).to.not.be.undefined;
@@ -338,7 +338,7 @@ describe('Idea Endpoints ', function() {
                 .set('Authorization', 'Bearer ' + validLoginToken)
                 .send(idea)
                 .end((err, res) => {
-                    const code = 400;
+                    const code = 404;
                     expect(res.status).to.equal(code);
                     done();
                 });
@@ -362,7 +362,7 @@ describe('Idea Endpoints ', function() {
                 .delete(`/api/v1/ideas/${firstIdea._id}/user/${firstUser._id}`)
                 .set('Authorization', 'Bearer ' + validLoginToken)
                 .end((err, res) => {
-                    const code = 400;
+                    const code = 404;
                     expect(res.status).to.equal(code);
                     expect(res.ok).to.equal(false);
                     done();
@@ -375,11 +375,11 @@ describe('Idea Endpoints ', function() {
                 .set('Authorization', 'Bearer ' + validLoginToken)
                 .end((err, res) => {
                     const resError = res.body.response.error;
-                    const code = 403;
+                    const code = 401;
                     const apiRoute =
                     `/api/v1/ideas/${secondIdea._id}/user/${firstUser._id}`;
 
-                    expect(res.status).to.equal(403);
+                    expect(res.status).to.equal(401);
                     baseExpect(res.body, code, apiRoute, false, 'DELETE');
                     expect(res.body.response).to.have.property('error');
                     expect(resError).to.not.be.undefined;
