@@ -59,16 +59,24 @@ Back-end written in NodeJS for IdeaApp
 
 - [x] Add circleCI
 - [x] Set Heroku
-- [ ] Test API remote
+- [x] Test API remote
 
 ## Manage Error and HTTP code (V2)
 
-- [x] use HTTP code lib
-- [ ] set middleware for errors
+- [x] Use HTTP code lib
+- [ ] Set middleware for errors
 
-## Swagger
+## Update Architecture code (V2)
 
-- [ ] Update Swagger API
+- [x] Use new architecture for user api
+- [ ] Use new architecture for idea api
+- [ ] Use new architecture for user settings api
+
+## Test Architecture code (V2)
+
+- [x] Test new architecture for user api
+- [ ] Test new architecture for idea api
+- [ ] Test new architecture for user settings api
 
 ## Comments API (V3)
 
@@ -77,3 +85,13 @@ Back-end written in NodeJS for IdeaApp
 - [ ] Set Comments Routes
 - [ ] Unit Test Comments API
 - [ ] Add Comments to Swagger
+
+## Deployment
+
+- [x] API V1
+- [ ] API V2
+- [ ] API V3
+
+## Swagger
+
+- [ ] Update Swagger API
