@@ -91,7 +91,7 @@ Back-end written in NodeJS for IdeaApp
 ## Deployment
 
 - [x] API V1
-- [ ] API V2
+- [x] API V2
 - [ ] API V3
 
 ## Swagger
