@@ -23,7 +23,8 @@ const authenticateRouteJWT = (req, res, next) => {
                 local.general.UNAUTHORIZED + ' ' + info,
             );
         }
-        return next();
+        req.user = user;
+        next();
     })(req, res, next);
 };
 
