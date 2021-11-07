@@ -1,6 +1,5 @@
 {
   "name": "ideaappbackend",
-  "type": "module",
   "version": "2.0.1",
   "description": "Back end written in Express for IdeaApp",
   "main": "src/index.js",
@@ -20,8 +19,7 @@
     "clean": "rm -rf build && mkdir build",
     "build-babel": "cross-env NODE_ENV=production babel -d ./build --extensions \".ts,.js\" --copy-files ./src -s ",
     "build-production": "npm install && npm run clean && npm run build-babel",
-    "heroku-postbuild": "npm run build-production",
-    "preinstall": "npx npm-force-resolutions"
+    "heroku-postbuild": "npm run build-production"
   },
   "repository": {
     "type": "git",
@@ -31,15 +29,6 @@
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Mousticke/IdeaAppBackEnd/issues"
-  },
-  "resolutions": {
-    "ansi-regex": ">=5.0.1",
-    "set-value": ">=4.0.1",
-    "mpath": ">=0.8.4",
-    "glob-parent": ">=5.1.2",
-    "mquery": ">=3.2.3",
-    "yargs-parser": ">=18.1.2",
-    "minimist": ">=1.2.3"
   },
   "homepage": "https://github.com/Mousticke/IdeaAppBackEnd#readme",
   "dependencies": {

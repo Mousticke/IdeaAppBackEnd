@@ -10,11 +10,12 @@ import {mockUserLogin,
     mockUpdateFailureBody, mockUpdateFailureUserExist,
     deleteAllUsers} from './mockUser';
 import {mongoObjectId, baseExpect} from '../utils/utils';
+const crypto = require('crypto').webcrypto;
 
 chai.use(chaiHttp);
 const {expect} = chai;
-const firstRandom = window.crypto.getRandomValues(new Uint32Array(1))[0];
-const secondRandom = window.crypto.getRandomValues(new Uint32Array(1))[0];
+const firstRandom = crypto.getRandomValues(new Uint32Array(1))[0];
+const secondRandom = crypto.getRandomValues(new Uint32Array(1))[0];
 describe('User Endpoints ', function() {
     let firstUser;
     let secondUser;
