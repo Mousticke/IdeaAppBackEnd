@@ -18,6 +18,8 @@ import UnauthorizedError from './helpers/response/unauthorized.error';
 import ExistingError from './helpers/response/existing.error';
 import BadRequestError from './helpers/response/badRequest.error';
 require('express-async-errors');
+const rateLimit = require('express-rate-limit');
+
 
 dotenv.config();
 const app = express();
@@ -81,7 +83,7 @@ router.use(function(req, res, next) {
     next();
 });
 
-app.use('/api/v1', apiLimiter);
+app.use(apiLimiter);
 app.use('/api/v1', api);
 app.use(redirectHome);
 
