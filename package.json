@@ -1,5 +1,6 @@
 {
   "name": "ideaappbackend",
+  "type": "module",
   "version": "2.0.1",
   "description": "Back end written in Express for IdeaApp",
   "main": "src/index.js",
