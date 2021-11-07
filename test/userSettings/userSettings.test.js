@@ -20,7 +20,7 @@ let secondUser;
 let firstUserSettings;
 let secondUserSettings;
 let validLoginToken = '';
-let falseToken = process.env.TEST_FALSE_TOKEN;
+const falseToken = process.env.TEST_FALSE_TOKEN;
 
 const loginUser = () => {
     return new Promise((resolve) => {

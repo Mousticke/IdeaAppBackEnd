@@ -13,8 +13,8 @@ import {mongoObjectId, baseExpect} from '../utils/utils';
 
 chai.use(chaiHttp);
 const {expect} = chai;
-const firstRandom = Math.floor(Math.random() * 100);
-const secondRandom = Math.floor(Math.random() * 100);
+const firstRandom = window.crypto.getRandomValues(new Uint32Array(1))[0];
+const secondRandom = window.crypto.getRandomValues(new Uint32Array(1))[0];
 describe('User Endpoints ', function() {
     let firstUser;
     let secondUser;
