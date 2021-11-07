@@ -20,6 +20,7 @@ let secondUser;
 let firstUserSettings;
 let secondUserSettings;
 let validLoginToken = '';
+let falseToken = process.env.TEST_FALSE_TOKEN;
 
 const loginUser = () => {
     return new Promise((resolve) => {
@@ -105,7 +106,7 @@ describe('User Settings Endpoints ', function() {
         it('Should unauthorized from bad token', function(done) {
             chai.request(app)
                 .get(`/api/v1/users/${firstUser._id}/settings`)
-                .set('Authorization', 'Bearer ' + '12356')
+                .set('Authorization', 'Bearer ' + falseToken)
                 .end((err, res) => {
                     const resError = res.error;
                     expect(resError.status).to.equal(401);
@@ -172,7 +173,7 @@ describe('User Settings Endpoints ', function() {
             chai.request(app)
                 .patch(route)
                 .send(updateUserSettings('Dark', true, ''))
-                .set('Authorization', 'Bearer ' + '12356')
+                .set('Authorization', 'Bearer ' + falseToken)
                 .end((err, res) => {
                     const resError = res.error;
                     expect(resError.status).to.equal(401);
