@@ -14,34 +14,34 @@ export const mockUserLoginFailure = () => {
     };
 };
 
-export const mockCreateFirstUser = (randomNumber) => {
+export const mockCreateFirstUser = (cryptoNumber) => {
     return new User({
-        'username': 'Mousticke'+randomNumber,
+        'username': 'Mousticke'+cryptoNumber,
         'firstname': 'Akim',
         'lastname': 'Benchiha',
-        'email': 'akim'+randomNumber+'.benchiha@test.com',
+        'email': 'akim'+cryptoNumber+'.benchiha@test.com',
         'age': '11.18.1995',
         'password': '123456',
     });
 };
 
-export const mockCreateSecondUser = (randomNumber) => {
+export const mockCreateSecondUser = (cryptoNumber) => {
     return new User({
-        'username': 'Mousticke_'+randomNumber,
+        'username': 'Mousticke_'+cryptoNumber,
         'firstname': 'Akim',
         'lastname': 'Benchiha',
-        'email': 'akim'+randomNumber+'.benchiha@test.com',
+        'email': 'akim'+cryptoNumber+'.benchiha@test.com',
         'age': '11.18.1995',
         'password': '123456',
     });
 };
 
-export const mockCreateThirdUser = (randomNumber) => {
+export const mockCreateThirdUser = (cryptoNumber) => {
     return new User({
-        'username': 'Mousticke_'+randomNumber,
+        'username': 'Mousticke_'+cryptoNumber,
         'firstname': 'Akim',
         'lastname': 'Benchiha',
-        'email': 'akim'+randomNumber+'.benchiha@test.com',
+        'email': 'akim'+cryptoNumber+'.benchiha@test.com',
         'age': '11.18.1995',
         'password': '123456',
     });
