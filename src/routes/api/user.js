@@ -2,14 +2,30 @@
 import express from 'express';
 import passport from 'passport';
 import userSettingsRoute from './userSettings';
-import {validateBody, UserRegisterSchemaValidation, UserLoginSchemaValidation, UserInformationSchemaValidation} from '../../helpers/inputValidation';
+import {
+    validateBody,
+    UserRegisterSchemaValidation,
+    UserLoginSchemaValidation,
+    UserInformationSchemaValidation,
+} from '../../helpers/inputValidation';
 import UserController from '../../controllers/userController';
 import UserService from '../../services/userService';
 import UserSettingsService from '../../services/userSettingsService';
+import UnauthorizedError from '../../helpers/response/unauthorized.error';
+import local from '../../config/globalization/local.en.json';
 
 const router = new express.Router();
 
-const authenticateRouteJWT = passport.authenticate('jwt', {session: false});
+const authenticateRouteJWT = (req, res, next) => {
+    passport.authenticate('jwt', {session: false}, (err, user, info) => {
+        if (err || !user) {
+            throw new UnauthorizedError(
+                local.general.UNAUTHORIZED + ' ' + info,
+            );
+        }
+        return next();
+    })(req, res, next);
+};
 
 const userService = new UserService();
 const userSettingsService = new UserSettingsService();

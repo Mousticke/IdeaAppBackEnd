@@ -36,7 +36,7 @@ passport.use(new LocalStrategy({
     usernameField: 'username',
 }, async (username, password, done) => {
     try {
-    // Find the user given the username
+        // Find the user given the username
         const user = await User.findOne({username});
         if (!user) {
             return done(null, false, {message: 'Incorrect credentials.'});

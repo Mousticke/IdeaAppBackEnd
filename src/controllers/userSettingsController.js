@@ -32,14 +32,18 @@ export default class UserSettingsController extends Controller {
      * @memberof UserSettingsController
      */
     async getUserSettings(req, res, next) {
-        this.apiInformation(req);
-        validateUserID(req.user._id, req.params.id,
-            'The user ID does not match the subject in the access token');
-        const idUser = _.get(req, 'user._id', '');
-        const userSettings = await this.service.findUserSettings(idUser);
+        try {
+            this.apiInformation(req);
+            validateUserID(req.user._id, req.params.id,
+                'The user ID does not match the subject in the access token');
+            const idUser = _.get(req, 'user._id', '');
+            const userSettings = await this.service.findUserSettings(idUser);
 
-        return this.callResponseObject(HTTPStatus.OK, userSettings,
-            this.apiRoute, this.apiMethod, true, res);
+            return this.callResponseObject(HTTPStatus.OK, userSettings,
+                this.apiRoute, this.apiMethod, true, res);
+        } catch (error) {
+            next(error);
+        }
     }
 
     /**
@@ -52,21 +56,25 @@ export default class UserSettingsController extends Controller {
      * @memberof UserSettingsController
      */
     async updateUserSettings(req, res, next) {
-        const idSettings = _.get(req, 'params.idSettings');
-        const idUser = _.get(req, 'params.id');
-        const settingsDTO = _.get(req, 'body', '');
-        this.apiInformation(req);
-        const findSetting = await this.service.findByIdSetting(idSettings);
+        try {
+            const idSettings = _.get(req, 'params.idSettings');
+            const idUser = _.get(req, 'params.id');
+            const settingsDTO = _.get(req, 'body', '');
+            this.apiInformation(req);
+            const findSetting = await this.service.findByIdSetting(idSettings);
 
-        validateUserID(req.user._id, req.params.id,
-            'The user ID does not match the subject in the access token');
-        validateUserID(req.user._id, findSetting.userID._id,
-            'This settings does not belong to this user');
+            validateUserID(req.user._id, req.params.id,
+                'The user ID does not match the subject in the access token');
+            validateUserID(req.user._id, findSetting.userID._id,
+                'This settings does not belong to this user');
 
-        const settingsUpdate = await this.service
-            .updateUserSettings(settingsDTO, idSettings, idUser);
+            const settingsUpdate = await this.service
+                .updateUserSettings(settingsDTO, idSettings, idUser);
 
-        return this.callResponseObject(HTTPStatus.OK, settingsUpdate,
-            this.apiRoute, this.apiMethod, true, res);
+            return this.callResponseObject(HTTPStatus.OK, settingsUpdate,
+                this.apiRoute, this.apiMethod, true, res);
+        } catch (error) {
+            next(error);
+        }
     }
 }
