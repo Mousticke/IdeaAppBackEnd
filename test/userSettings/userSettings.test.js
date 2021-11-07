@@ -113,7 +113,10 @@ describe('User Settings Endpoints ', function() {
                     expect(res).to.have.property('error');
                     expect(resError.text)
                         .to
-                        .equal('Unauthorized');
+                        .contain('JsonWebTokenError');
+                    expect(resError.text)
+                        .to
+                        .contain('Unauthorized');
                     done();
                 });
         });
@@ -180,7 +183,7 @@ describe('User Settings Endpoints ', function() {
                     expect(res).to.have.property('error');
                     expect(resError.text)
                         .to
-                        .equal('Unauthorized');
+                        .contain('JsonWebTokenError');
                     done();
                 });
         });
