@@ -1,7 +1,7 @@
 # IdeaAppBackEnd
 
 [![CircleCI](https://circleci.com/gh/Mousticke/IdeaAppBackEnd.svg?style=svg)](https://circleci.com/gh/Mousticke/IdeaAppBackEnd)
-[![CodeQL](https://github.com/Mousticke/IdeaAppBackEnd/actions/workflows/codeql-analysis.yml/badge.svg?branch=master&event=check_run)](https://github.com/Mousticke/IdeaAppBackEnd/actions/workflows/codeql-analysis.yml)
+[![CodeQL](https://github.com/Mousticke/IdeaAppBackEnd/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/Mousticke/IdeaAppBackEnd/actions/workflows/codeql-analysis.yml)
 
 Back-end written in NodeJS for IdeaApp
 
