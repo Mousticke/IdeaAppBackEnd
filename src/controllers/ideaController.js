@@ -6,7 +6,6 @@ import {validateUserID} from '../helpers/inputValidation';
 require('express-async-errors');
 
 const resIdea = local.idea;
-
 /**
  * Idea controller for idea route
  *
