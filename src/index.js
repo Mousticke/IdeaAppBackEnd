@@ -24,6 +24,11 @@ const app = express();
 const router = new express.Router();
 let mongoDBConnect;
 
+const apiLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100,
+});
+
 switch (process.env.NODE_ENV) {
 case 'development':
     mongoDBConnect = `${process.env.REMOTE_DB_HOST_DEV}`;
@@ -60,7 +65,6 @@ app.use(bodyParser.urlencoded({ // Middleware
     extended: true,
 }));
 
-
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(passport.initialize());
@@ -77,7 +81,7 @@ router.use(function(req, res, next) {
     next();
 });
 
-
+app.use('/api/v1', apiLimiter);
 app.use('/api/v1', api);
 app.use(redirectHome);
 
